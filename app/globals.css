@@ -1,0 +1,2 @@
+@import 'tailwindcss';
+:root{color-scheme:dark} body{margin:0;background:#0b1020;color:#e7ecf5;font-family:ui-sans-serif,system-ui,sans-serif} *{box-sizing:border-box} a{text-decoration:none;color:inherit}.card{background:#111a2e;border:1px solid #24314d;border-radius:16px}.muted{color:#8e9ab0}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}

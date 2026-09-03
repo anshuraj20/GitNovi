@@ -1,0 +1,1 @@
+export const challengeSeed=[{slug:'first-commit',title:'First Commit',level:'beginner'},{slug:'conflict-solver',title:'Conflict Solver',level:'intermediate'},{slug:'reflog-rescue',title:'Reflog Rescue',level:'advanced'},{slug:'object-detective',title:'Object Detective',level:'advanced'}];

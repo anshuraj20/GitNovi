@@ -1,0 +1,9 @@
+project_id = "gitnovi"
+[api]
+enabled = true
+[db]
+port = 54322
+[auth]
+enabled = true
+[auth.email]
+enable_signup = true

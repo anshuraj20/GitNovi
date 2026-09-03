@@ -1,0 +1,1 @@
+export function calculateStreak(activityDates:string[],today:string){const set=new Set(activityDates);const d=new Date(`${today}T00:00:00Z`);if(!set.has(today))d.setUTCDate(d.getUTCDate()-1);let cur=0;while(set.has(d.toISOString().slice(0,10))){cur++;d.setUTCDate(d.getUTCDate()-1)}return cur}

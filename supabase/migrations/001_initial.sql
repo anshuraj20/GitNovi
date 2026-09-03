@@ -1,0 +1,27 @@
+create extension if not exists pgcrypto;
+create table if not exists profiles(id uuid primary key references auth.users(id) on delete cascade,email text,display_name text,avatar_url text,current_level text default 'pre-git',last_active_at timestamptz,created_at timestamptz default now());
+create table if not exists course_modules(id uuid primary key default gen_random_uuid(),slug text unique not null,title text not null,level int not null,description text,created_at timestamptz default now());
+create table if not exists lessons(id uuid primary key default gen_random_uuid(),module_id uuid references course_modules(id) on delete cascade,slug text unique not null,title text not null,objective text,content jsonb not null default '{}'::jsonb,estimated_minutes int default 10,sort_order int default 0);
+create table if not exists lesson_progress(user_id uuid references auth.users(id) on delete cascade,lesson_id uuid references lessons(id) on delete cascade,completed boolean default false,percent int default 0,completed_at timestamptz,updated_at timestamptz default now(),primary key(user_id,lesson_id));
+create table if not exists commands(id uuid primary key default gen_random_uuid(),name text unique not null,category text,difficulty text,description text,syntax text,examples jsonb default '[]'::jsonb,dangerous boolean default false,implemented boolean default false,version_notes text);
+create table if not exists quizzes(id uuid primary key default gen_random_uuid(),lesson_id uuid references lessons(id) on delete cascade,title text not null);
+create table if not exists quiz_questions(id uuid primary key default gen_random_uuid(),quiz_id uuid references quizzes(id) on delete cascade,question text not null,options jsonb not null,answer_index int not null);
+create table if not exists quiz_attempts(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id) on delete cascade,quiz_id uuid references quizzes(id) on delete cascade,score int not null,created_at timestamptz default now());
+create table if not exists terminal_challenges(id uuid primary key default gen_random_uuid(),slug text unique not null,title text not null,level text not null,instructions text not null,initial_state jsonb default '{}'::jsonb);
+create table if not exists challenge_progress(user_id uuid references auth.users(id) on delete cascade,challenge_id uuid references terminal_challenges(id) on delete cascade,completed boolean default false,score int default 0,completed_at timestamptz,primary key(user_id,challenge_id));
+create table if not exists daily_activity(user_id uuid references auth.users(id) on delete cascade,activity_date date not null,lessons int default 0,commands int default 0,challenges int default 0,minutes int default 0,primary key(user_id,activity_date));
+create table if not exists user_streaks(user_id uuid primary key references auth.users(id) on delete cascade,current_streak int default 0,longest_streak int default 0,last_activity_date date);
+create table if not exists achievements(id text primary key,title text not null,description text);create table if not exists user_achievements(user_id uuid references auth.users(id) on delete cascade,achievement_id text references achievements(id) on delete cascade,earned_at timestamptz default now(),primary key(user_id,achievement_id));
+create table if not exists terminal_sessions(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id) on delete cascade,challenge_id uuid references terminal_challenges(id),state jsonb not null,created_at timestamptz default now(),updated_at timestamptz default now());
+
+alter table profiles enable row level security; alter table lesson_progress enable row level security; alter table quiz_attempts enable row level security; alter table challenge_progress enable row level security; alter table daily_activity enable row level security; alter table user_streaks enable row level security; alter table user_achievements enable row level security; alter table terminal_sessions enable row level security;
+create policy "profiles own" on profiles for all using (auth.uid()=id) with check (auth.uid()=id);
+create policy "lesson progress own" on lesson_progress for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "quiz attempts own" on quiz_attempts for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "challenge progress own" on challenge_progress for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "daily activity own" on daily_activity for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "streak own" on user_streaks for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "achievements own" on user_achievements for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "terminal sessions own" on terminal_sessions for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create or replace function public.handle_new_user() returns trigger language plpgsql security definer set search_path = public as $$ begin insert into public.profiles(id,email,display_name) values (new.id,new.email,coalesce(new.raw_user_meta_data->>'display_name',split_part(coalesce(new.email,''),'@',1))); return new; end; $$;
+drop trigger if exists on_auth_user_created on auth.users; create trigger on_auth_user_created after insert on auth.users for each row execute procedure public.handle_new_user();
