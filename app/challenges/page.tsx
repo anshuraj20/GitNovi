@@ -1,6 +1,5 @@
 import { ChallengesExplorer } from '@/components/challenges/ChallengesExplorer';
 import { requireUser } from '@/lib/supabase/server';
-import Link from 'next/link';
 
 export default async function ChallengesPage() {
   const { user, supabase } = await requireUser();
@@ -24,42 +23,19 @@ export default async function ChallengesPage() {
   const repoState = terminalSession?.state ?? null;
 
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12">
-      {/* Back Button */}
-      <Link
-        href="/dashboard"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
-      >
-        <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-          />
-        </svg>
-        <span>Back to Dashboard</span>
-      </Link>
-
-      {/* Header */}
-      <div className="flex flex-col gap-2">
-        <div className="text-xs uppercase tracking-[0.2em] font-mono text-cyan-400">
-          Hands-On Lab
+    <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 sm:py-10 space-y-6">
+      <div className="space-y-1.5 max-w-2xl">
+        <div className="text-xs font-mono text-[#737F8C]">
+          Hands-On Labs
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Git Terminal Challenges
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#E6EDF3] tracking-tight">
+          Git Scenario Challenges
         </h1>
-        <p className="mt-1 text-slate-400 text-sm sm:text-base max-w-2xl">
-          Apply your Git knowledge to real-world scenarios. Practice each challenge in the Sandbox Terminal and click Verify to validate your repository state.
+        <p className="text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">
+          18 practical scenarios. Execute the steps in the Sandbox Terminal and verify your repository state to earn XP.
         </p>
       </div>
 
-      {/* Challenges Explorer */}
       <ChallengesExplorer
         initialCompletedIds={initialCompletedIds}
         repoState={repoState}

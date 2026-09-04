@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
-import { challengesCatalog, Challenge } from '@/lib/challenges/challengeCatalog';
+import { challengesCatalog } from '@/lib/challenges/challengeCatalog';
 import { CompleteChallengeButton } from './CompleteChallengeButton';
 import Link from 'next/link';
 
@@ -17,7 +17,6 @@ export function ChallengesExplorer({
   const [completedSet, setCompletedSet] = useState<Set<string>>(() => new Set(initialCompletedIds));
   const [activeHint, setActiveHint] = useState<string | null>(null);
 
-  // Synchronize with local storage on load
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedDone = new Set<string>(initialCompletedIds);
@@ -52,90 +51,28 @@ export function ChallengesExplorer({
     });
   }, [searchQuery, filterLevel, completedSet]);
 
-  const totalXP = challengesCatalog.reduce((acc, c) => acc + c.xp, 0);
-  const earnedXP = challengesCatalog
-    .filter((c) => completedSet.has(c.id))
-    .reduce((acc, c) => acc + c.xp, 0);
-  const percent = Math.round((completedSet.size / challengesCatalog.length) * 100);
-
   return (
-    <div className="mt-8 space-y-6">
-      {/* Progress Metric Banner */}
-      <div className="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-slate-950/80 p-5 shadow-lg shadow-slate-950/30">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <div className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-400">
-              Lab Mastery
-            </div>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-2xl sm:text-3xl font-extrabold text-white">
-                {completedSet.size} / {challengesCatalog.length}
-              </span>
-              <span className="text-xs text-slate-400">challenges completed</span>
-            </div>
-          </div>
+    <div className="space-y-4">
+      {/* Search & Filter Header */}
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          type="text"
+          placeholder="Filter challenges (branch, merge, rebase, stash)..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="flex-1 rounded-md border border-[#293542] bg-[#11161D] px-3 py-2 text-xs font-mono text-[#E6EDF3] placeholder-[#737F8C] outline-none focus:border-[#22D3EE]/50"
+        />
 
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                XP Earned
-              </div>
-              <div className="text-lg font-bold text-cyan-300">
-                {earnedXP} / {totalXP} XP
-              </div>
-            </div>
-
-            <div className="h-10 w-10 rounded-full border-2 border-cyan-500/40 bg-cyan-500/10 flex items-center justify-center font-bold text-xs text-cyan-300">
-              {percent}%
-            </div>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-950">
-          <div
-            className="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-500"
-            style={{ width: `${percent}%` }}
-          />
-        </div>
-      </div>
-
-      {/* Filter Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        {/* Search */}
-        <div className="relative flex-1 max-w-md">
-          <input
-            type="text"
-            placeholder="Search challenges (e.g. branch, merge, rebase, stash)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 pl-10 text-xs text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
-          />
-          <svg
-            className="absolute left-3.5 top-3 h-4 w-4 text-slate-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </div>
-
-        {/* Level Filters */}
-        <div className="flex flex-wrap gap-1.5 text-xs">
+        <div className="flex items-center gap-1 text-xs overflow-x-auto pb-1 sm:pb-0">
           {['all', 'beginner', 'intermediate', 'advanced', 'completed'].map((lvl) => (
             <button
               key={lvl}
+              type="button"
               onClick={() => setFilterLevel(lvl)}
-              className={`rounded-lg px-3 py-1.5 capitalize transition cursor-pointer ${
+              className={`rounded px-2.5 py-1 text-xs capitalize transition cursor-pointer ${
                 filterLevel === lvl
-                  ? 'border border-cyan-500/50 bg-cyan-500/20 font-semibold text-cyan-300'
-                  : 'border border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                  ? 'bg-[#083344] text-[#22D3EE] font-medium'
+                  : 'text-[#737F8C] hover:text-[#E6EDF3] hover:bg-[#11161D]'
               }`}
             >
               {lvl}
@@ -144,11 +81,16 @@ export function ChallengesExplorer({
         </div>
       </div>
 
+      <div className="flex items-center justify-between text-xs text-[#737F8C] font-mono">
+        <span>{completedSet.size} of {challengesCatalog.length} challenges passed</span>
+        <span>Showing {filteredChallenges.length} scenarios</span>
+      </div>
+
       {/* Challenges List */}
-      <div className="grid gap-4">
+      <div className="space-y-3">
         {filteredChallenges.length === 0 ? (
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/30 p-8 text-center text-xs text-slate-400">
-            No challenges found matching your criteria.
+          <div className="rounded-lg border border-[#293542] bg-[#11161D] p-6 text-center text-xs text-[#737F8C] font-mono">
+            No challenges found matching your filter.
           </div>
         ) : (
           filteredChallenges.map((challenge) => {
@@ -158,111 +100,81 @@ export function ChallengesExplorer({
             return (
               <div
                 key={challenge.id}
-                className={`rounded-2xl border p-5 sm:p-6 transition shadow-lg ${
-                  isDone
-                    ? 'border-emerald-500/30 bg-slate-900/40 shadow-emerald-950/10'
-                    : 'border-slate-800 bg-slate-900/60 shadow-slate-950/20 hover:border-slate-700'
-                }`}
+                className="rounded-lg border border-[#293542] bg-[#11161D] p-4 sm:p-5 space-y-3"
               >
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                          challenge.level === 'beginner'
-                            ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                            : challenge.level === 'intermediate'
-                            ? 'border border-cyan-500/30 bg-cyan-500/10 text-cyan-400'
-                            : 'border border-purple-500/30 bg-purple-500/10 text-purple-400'
-                        }`}
-                      >
-                        {challenge.level}
-                      </span>
-
-                      <span className="text-xs font-bold text-slate-400 font-mono">
-                        +{challenge.xp} XP
-                      </span>
-
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-mono text-[#737F8C]">
+                      <span className="capitalize text-[#22D3EE]">{challenge.level}</span>
+                      <span>·</span>
+                      <span>+{challenge.xp} XP</span>
                       {isDone && (
-                        <span className="flex items-center gap-1 text-[11px] font-bold text-emerald-400 font-mono">
-                          <span>✓</span>
-                          <span>Completed</span>
-                        </span>
+                        <>
+                          <span>·</span>
+                          <span className="text-[#34D399] font-semibold">✓ Passed</span>
+                        </>
                       )}
                     </div>
 
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-base font-bold text-[#E6EDF3] mt-1">
                       {challenge.title}
                     </h3>
-
-                    <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
-                      {challenge.goal}
-                    </p>
-
-                    {/* Required Commands Checklist */}
-                    <div className="pt-2 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono mr-1">
-                        Commands:
-                      </span>
-                      {challenge.requiredCommands.map((cmd) => (
-                        <code
-                          key={cmd}
-                          className="rounded-md border border-slate-800 bg-slate-950 px-2 py-0.5 font-mono text-[11px] text-cyan-300"
-                        >
-                          {cmd}
-                        </code>
-                      ))}
-                    </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-col sm:items-end gap-2.5 shrink-0 pt-2 sm:pt-0">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href="/terminal"
-                        className="rounded-xl border border-slate-800 bg-slate-950/80 px-3.5 py-2 text-xs font-semibold text-slate-300 transition hover:border-slate-700 hover:text-white"
-                      >
-                        Open Terminal →
-                      </Link>
+                  <div className="shrink-0 flex items-center gap-2 pt-1 sm:pt-0">
+                    <CompleteChallengeButton
+                      challengeId={challenge.id}
+                      challengeSlug={challenge.slug}
+                      initialCompleted={isDone}
+                      repoState={repoState}
+                    />
 
-                      <CompleteChallengeButton
-                        challengeId={challenge.id}
-                        challengeSlug={challenge.slug}
-                        initialCompleted={isDone}
-                        repoState={repoState}
-                        onCompleted={(isNowDone) => {
-                          setCompletedSet((prev) => {
-                            const next = new Set(prev);
-                            if (isNowDone) next.add(challenge.id);
-                            else next.delete(challenge.id);
-                            return next;
-                          });
-                        }}
-                      />
-                    </div>
-
-                    {/* Hint Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => setActiveHint(isHintOpen ? null : challenge.id)}
-                      className="text-[11px] text-slate-500 hover:text-cyan-400 transition font-mono self-start sm:self-auto cursor-pointer"
+                    <Link
+                      href="/terminal"
+                      className="text-xs text-[#22D3EE] hover:underline"
                     >
-                      {isHintOpen ? 'Hide Hint ▲' : 'Show Solution Hint ▼'}
-                    </button>
+                      Terminal →
+                    </Link>
                   </div>
                 </div>
 
-                {/* Solution Hint Box */}
-                {isHintOpen && (
-                  <div className="mt-4 rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-4 text-xs text-slate-300 animate-fadeIn">
-                    <div className="font-bold text-cyan-300 font-mono text-[11px] uppercase tracking-wider mb-1">
-                      💡 Challenge Hint & Steps
-                    </div>
-                    <div className="leading-relaxed whitespace-pre-line text-slate-300 font-mono text-[11px]">
+                {/* Objective */}
+                <p className="text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">
+                  {challenge.goal}
+                </p>
+
+                {/* Task Instructions */}
+                <div className="space-y-1 text-xs">
+                  <div className="font-mono text-[10px] text-[#737F8C] uppercase">
+                    Steps to Complete:
+                  </div>
+                  <ul className="space-y-1 text-[#A7B0BC]">
+                    {challenge.instructions.map((inst, i) => (
+                      <li key={i} className="flex items-start gap-1.5">
+                        <span className="font-mono text-[#22D3EE]">•</span>
+                        <span>{inst}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Collapsible Hint */}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setActiveHint(isHintOpen ? null : challenge.id)}
+                    className="text-xs text-[#737F8C] hover:text-[#E6EDF3] cursor-pointer"
+                  >
+                    {isHintOpen ? '▾ Hide hint' : '▸ Show hint'}
+                  </button>
+
+                  {isHintOpen && (
+                    <div className="mt-2 rounded border border-[#202934] bg-[#090D12] p-2.5 font-mono text-xs text-[#E6EDF3]">
                       {challenge.hint}
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             );
           })

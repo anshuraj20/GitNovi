@@ -53,13 +53,16 @@ export async function GET(request: Request) {
       );
     }
 
-    // If new user via OAuth, ensure a profile record exists
+    // If user via OAuth, ensure a profile record exists with their actual display name
     if (data?.user) {
       try {
+        const meta = data.user.user_metadata || {};
         const displayName =
-          data.user.user_metadata?.full_name ||
-          data.user.user_metadata?.name ||
-          data.user.user_metadata?.user_name ||
+          meta.full_name ||
+          meta.name ||
+          meta.display_name ||
+          (meta.given_name ? `${meta.given_name} ${meta.family_name || ''}`.trim() : null) ||
+          meta.user_name ||
           data.user.email?.split('@')[0] ||
           'Developer';
 
@@ -68,7 +71,7 @@ export async function GET(request: Request) {
             id: data.user.id,
             email: data.user.email,
             display_name: displayName,
-            avatar_url: data.user.user_metadata?.avatar_url || null,
+            avatar_url: meta.avatar_url || meta.picture || null,
             updated_at: new Date().toISOString(),
           },
           { onConflict: 'id' }

@@ -45,7 +45,6 @@ const SUGGESTIONS = [
   'Explain git stash pop vs git stash apply with a cheat sheet',
 ];
 
-// Interactive Code Block with 1-click Copy & Preserved Line Breaks
 function CodeBlock({ children, className }: { children: React.ReactNode; className?: string }) {
   const [copied, setCopied] = useState(false);
   const codeText = String(children).replace(/\n$/, '');
@@ -63,32 +62,26 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
   };
 
   return (
-    <div className="relative my-3.5 overflow-hidden rounded-xl border border-slate-800 bg-[#070b14] font-mono text-xs shadow-lg">
+    <div className="relative my-3.5 overflow-hidden rounded-md border border-[#202934] bg-[#090D12] font-mono text-xs">
       {/* Code Header Bar */}
-      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-3.5 py-1.5 select-none text-[11px] text-slate-400">
-        <span className="font-bold text-cyan-400 uppercase tracking-wider font-mono">{language}</span>
+      <div className="flex items-center justify-between border-b border-[#202934] bg-[#11161D] px-3.5 py-1.5 select-none text-[11px] text-[#737F8C]">
+        <span className="font-bold text-[#22D3EE] uppercase tracking-wider font-mono">{language}</span>
         <button
           type="button"
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-cyan-300 transition cursor-pointer font-sans"
+          className="flex items-center gap-1.5 text-[11px] text-[#737F8C] hover:text-[#E6EDF3] transition cursor-pointer font-sans"
         >
           {copied ? (
-            <>
-              <span className="text-emerald-400 font-bold">✓</span>
-              <span className="text-emerald-400 font-semibold">Copied!</span>
-            </>
+            <span className="text-[#34D399] font-semibold">✓ Copied</span>
           ) : (
-            <>
-              <span>📋</span>
-              <span>Copy code</span>
-            </>
+            <span>Copy code</span>
           )}
         </button>
       </div>
 
-      {/* Code Content with Guaranteed Line Breaks */}
-      <div className="overflow-x-auto p-3.5 text-slate-200 leading-relaxed font-mono">
-        <pre className="whitespace-pre font-mono text-xs text-slate-200">
+      {/* Code Content */}
+      <div className="overflow-x-auto p-3.5 text-[#E6EDF3] leading-relaxed font-mono">
+        <pre className="whitespace-pre font-mono text-xs text-[#E6EDF3]">
           <code>{codeText}</code>
         </pre>
       </div>
@@ -416,43 +409,43 @@ export function GitTutor() {
   return (
     <div className="mx-auto max-w-6xl">
       {/* ChatGPT / Gemini Style Container Frame */}
-      <div className="flex rounded-3xl border border-slate-800 bg-[#070b14]/90 shadow-2xl shadow-slate-950/60 overflow-hidden h-[calc(100vh-140px)] min-h-[600px] max-h-[820px]">
+      <div className="flex rounded-lg border border-[#293542] bg-[#0B0F14] overflow-hidden h-[calc(100vh-140px)] min-h-[600px] max-h-[820px]">
         {/* Left Sidebar (Conversations / History) */}
         <aside
-          className={`shrink-0 w-64 border-r border-slate-800/80 bg-slate-950/90 flex flex-col transition-all duration-300 z-20 ${
+          className={`shrink-0 w-64 border-r border-[#202934] bg-[#0B0F14] flex flex-col transition-all duration-300 z-20 ${
             sidebarOpen ? 'block' : 'hidden lg:flex'
           }`}
         >
           {/* New Chat Button */}
-          <div className="p-3 border-b border-slate-800/80">
+          <div className="p-3 border-b border-[#202934]">
             <button
               type="button"
               onClick={createNewConversation}
               disabled={loading}
-              className="w-full flex items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-2.5 text-xs font-bold text-slate-200 transition hover:border-cyan-500/40 hover:bg-slate-900 hover:text-white cursor-pointer"
+              className="w-full flex items-center justify-between gap-2 rounded-md border border-[#293542] bg-[#11161D] px-3.5 py-2.5 text-xs font-semibold text-[#E6EDF3] transition hover:border-[#22D3EE]/40 hover:bg-[#171D25] cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <span className="text-cyan-400 font-bold text-base">+</span>
+                <span className="text-[#22D3EE] font-bold text-base">+</span>
                 <span>New chat</span>
               </div>
-              <span className="text-[10px] text-slate-500 font-mono">⌘K</span>
+              <span className="text-[10px] text-[#737F8C] font-mono">⌘K</span>
             </button>
           </div>
 
           {/* History List */}
           <div className="flex-1 overflow-y-auto p-2 space-y-1 [scrollbar-gutter:stable]">
-            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">
+            <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-[#737F8C] font-mono">
               Recent Chats
             </div>
 
             {loadingConversations ? (
               <div className="space-y-2 p-2">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-9 rounded-xl bg-slate-900/60 animate-pulse" />
+                  <div key={i} className="h-9 rounded-md bg-[#11161D] animate-pulse" />
                 ))}
               </div>
             ) : conversations.length === 0 ? (
-              <div className="p-4 text-center text-xs text-slate-500">No previous chats.</div>
+              <div className="p-4 text-center text-xs text-[#737F8C]">No previous chats.</div>
             ) : (
               conversations.map((c) => {
                 const isActive = c.id === activeConversationId;
@@ -464,14 +457,14 @@ export function GitTutor() {
                       setActiveConversationId(c.id);
                       setSidebarOpen(false);
                     }}
-                    className={`group flex items-center justify-between rounded-xl px-3 py-2 text-xs transition cursor-pointer ${
+                    className={`group flex items-center justify-between rounded-md px-3 py-2 text-xs transition cursor-pointer ${
                       isActive
-                        ? 'bg-slate-800/80 text-cyan-300 font-semibold shadow-sm'
-                        : 'text-slate-400 hover:bg-slate-900/60 hover:text-slate-200'
+                        ? 'bg-[#083344] text-[#22D3EE] font-medium'
+                        : 'text-[#737F8C] hover:bg-[#11161D] hover:text-[#E6EDF3]'
                     }`}
                   >
                     <div className="flex items-center gap-2 truncate flex-1">
-                      <span className="text-slate-500 text-[11px]">💬</span>
+                      <span className="text-[#737F8C] text-[11px]">💬</span>
                       <span className="truncate">{c.title}</span>
                     </div>
                     <button
@@ -480,7 +473,7 @@ export function GitTutor() {
                         e.stopPropagation();
                         void deleteConversation(c.id);
                       }}
-                      className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 p-0.5 rounded transition"
+                      className="opacity-0 group-hover:opacity-100 text-[#737F8C] hover:text-[#F87171] p-0.5 rounded transition cursor-pointer"
                       title="Delete chat"
                     >
                       ✕
@@ -492,39 +485,38 @@ export function GitTutor() {
           </div>
 
           {/* Sidebar Footer */}
-          <div className="p-3 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between">
+          <div className="p-3 border-t border-[#202934] text-[11px] text-[#737F8C] flex items-center justify-between">
             <span className="flex items-center gap-1.5">
-              <span className="font-mono font-bold text-cyan-400">λ</span>
+              <span className="font-mono font-bold text-[#22D3EE]">&gt;_</span>
               <span>GitNovi AI</span>
             </span>
-            <span className="text-[10px] text-emerald-400 font-mono">Online</span>
+            <span className="text-[10px] text-[#34D399] font-mono">Online</span>
           </div>
         </aside>
 
         {/* Main Central Chat Area */}
-        <main className="flex-1 flex flex-col min-w-0 bg-gradient-to-b from-[#070b14] to-slate-950 overflow-hidden relative">
+        <main className="flex-1 flex flex-col min-w-0 bg-[#0B0F14] overflow-hidden relative">
           {/* Top Chat Header with Dynamic Model Switcher */}
-          <div className="h-14 shrink-0 border-b border-slate-800/80 px-4 flex items-center justify-between bg-slate-950/40 backdrop-blur-md">
+          <div className="h-14 shrink-0 border-b border-[#202934] px-4 flex items-center justify-between bg-[#11161D]">
             <div className="flex items-center gap-2.5">
               {/* Mobile Sidebar Toggle */}
               <button
                 type="button"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="lg:hidden p-1.5 rounded-lg border border-slate-800 text-slate-400 hover:text-white"
+                className="lg:hidden p-1.5 rounded-md border border-[#293542] text-[#737F8C] hover:text-[#E6EDF3]"
               >
                 ☰
               </button>
 
-              {/* GitNovi Logo Badge */}
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono font-black text-cyan-400 shadow-md">
-                λ
+              <div className="flex h-8 w-8 items-center justify-center rounded-md border border-[#22D3EE]/40 bg-[#083344] font-mono font-bold text-xs text-[#22D3EE]">
+                &gt;_
               </div>
 
               <div>
-                <div className="text-sm font-bold text-white flex items-center gap-2">
+                <div className="text-sm font-bold text-[#E6EDF3] flex items-center gap-2">
                   <span>GitNovi AI</span>
-                  <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="flex items-center gap-1 text-[10px] text-[#34D399] font-mono">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#34D399]" />
                     <span>Ready</span>
                   </span>
                 </div>
@@ -545,7 +537,7 @@ export function GitTutor() {
                     }
                   }}
                   disabled={loading}
-                  className="cursor-pointer appearance-none rounded-xl border border-slate-800 bg-slate-900/90 py-1.5 pl-2.5 pr-7 font-mono text-[11px] font-semibold text-cyan-400 outline-none transition hover:border-cyan-500/50 focus:border-cyan-400 disabled:opacity-50"
+                  className="cursor-pointer appearance-none rounded-md border border-[#293542] bg-[#11161D] py-1.5 pl-2.5 pr-7 font-mono text-[11px] font-semibold text-[#22D3EE] outline-none transition hover:border-[#22D3EE]/50 focus:border-[#22D3EE] disabled:opacity-50"
                   title="Select AI Model"
                 >
                   <option value="auto">⚡ Auto Fallback</option>
@@ -555,7 +547,7 @@ export function GitTutor() {
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-cyan-400/80">
+                <div className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-[#22D3EE]">
                   ▼
                 </div>
               </div>
@@ -564,7 +556,7 @@ export function GitTutor() {
                 type="button"
                 onClick={createNewConversation}
                 disabled={loading}
-                className="text-xs font-semibold text-slate-400 hover:text-cyan-300 transition flex items-center gap-1.5 cursor-pointer rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-1.5 hover:bg-slate-900"
+                className="text-xs font-medium text-[#737F8C] hover:text-[#E6EDF3] transition flex items-center gap-1.5 cursor-pointer rounded-md border border-[#293542] bg-[#11161D] px-3 py-1.5 hover:bg-[#171D25]"
               >
                 <span>+ New Chat</span>
               </button>
@@ -577,22 +569,22 @@ export function GitTutor() {
             className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 space-y-6 [scrollbar-gutter:stable]"
           >
             {loadingMessages ? (
-              <div className="flex items-center justify-center h-full text-xs text-slate-500 gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+              <div className="flex items-center justify-center h-full text-xs text-[#737F8C] gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#22D3EE] border-t-transparent" />
                 <span>Loading chat...</span>
               </div>
             ) : messages.length === 0 ? (
               /* Empty Chat Showcase */
               <div className="flex flex-col items-center justify-center h-full max-w-xl mx-auto text-center space-y-6">
-                <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-cyan-500/40 bg-cyan-500/10 font-mono font-black text-3xl text-cyan-400 shadow-xl shadow-cyan-500/10">
-                  λ
+                <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-[#22D3EE]/40 bg-[#083344] font-mono font-bold text-2xl text-[#22D3EE]">
+                  &gt;_
                 </div>
 
                 <div>
-                  <h2 className="text-xl sm:text-2xl font-extrabold text-white">
+                  <h2 className="text-xl sm:text-2xl font-bold text-[#E6EDF3]">
                     What would you like to solve in Git today?
                   </h2>
-                  <p className="mt-2 text-xs sm:text-sm text-slate-400 leading-relaxed">
+                  <p className="mt-2 text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">
                     Ask about merge conflicts, commit recovery, interactive rebases, or internal plumbing objects.
                   </p>
                 </div>
@@ -605,9 +597,9 @@ export function GitTutor() {
                       type="button"
                       onClick={() => void ask(s)}
                       disabled={loading}
-                      className="rounded-2xl border border-slate-800/80 bg-slate-900/40 p-3 text-xs text-slate-300 transition hover:border-cyan-500/50 hover:bg-slate-900/80 hover:text-white cursor-pointer shadow-sm"
+                      className="rounded-md border border-[#293542] bg-[#11161D] p-3 text-xs text-[#A7B0BC] transition hover:border-[#22D3EE]/50 hover:bg-[#171D25] hover:text-[#E6EDF3] cursor-pointer"
                     >
-                      <span className="text-cyan-400 font-bold">↳ </span>
+                      <span className="text-[#22D3EE] font-bold">↳ </span>
                       {s}
                     </button>
                   ))}
@@ -624,31 +616,30 @@ export function GitTutor() {
                   >
                     {/* Assistant Logo Avatar */}
                     {!isUser && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono font-black text-cyan-400 shadow-md mt-0.5">
-                        λ
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[#22D3EE]/40 bg-[#083344] font-mono font-bold text-xs text-[#22D3EE] mt-0.5">
+                        &gt;_
                       </div>
                     )}
 
                     {/* Message Bubble Container */}
                     <div
-                      className={`max-w-[94%] sm:max-w-[88%] rounded-2xl p-4 sm:p-5 shadow-lg leading-relaxed text-sm ${
+                      className={`max-w-[94%] sm:max-w-[88%] rounded-lg p-4 sm:p-5 leading-relaxed text-sm ${
                         isUser
-                          ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-slate-950 font-medium rounded-tr-sm shadow-cyan-950/30'
-                          : 'border border-slate-800/80 bg-slate-900/85 text-slate-200 rounded-tl-sm shadow-slate-950/40'
+                          ? 'border border-[#293542] bg-[#171D25] text-[#E6EDF3]'
+                          : 'border border-[#293542] bg-[#11161D] text-[#E6EDF3]'
                       }`}
                     >
                       {isUser ? (
-                        <div className="whitespace-pre-wrap font-sans">{msg.content}</div>
+                        <div className="whitespace-pre-wrap font-sans text-[#E6EDF3]">{msg.content}</div>
                       ) : msg.content ? (
-                        <div className="prose prose-invert prose-sm max-w-none text-slate-200 leading-relaxed">
+                        <div className="prose prose-invert prose-sm max-w-none text-[#E6EDF3] leading-relaxed">
                           <ReactMarkdown
                             remarkPlugins={[remarkGfm]}
                             components={{
-                              // Table Rendering
                               table({ children }) {
                                 return (
-                                  <div className="my-3.5 overflow-x-auto rounded-xl border border-slate-800 bg-[#070b14] shadow-md">
-                                    <table className="min-w-full divide-y divide-slate-800 text-xs text-left border-collapse">
+                                  <div className="my-3.5 overflow-x-auto rounded-md border border-[#202934] bg-[#090D12]">
+                                    <table className="min-w-full divide-y divide-[#202934] text-xs text-left border-collapse">
                                       {children}
                                     </table>
                                   </div>
@@ -656,25 +647,23 @@ export function GitTutor() {
                               },
                               thead({ children }) {
                                 return (
-                                  <thead className="bg-slate-900 text-cyan-400 font-mono text-[11px] uppercase tracking-wider border-b border-slate-800 select-none">
+                                  <thead className="bg-[#11161D] text-[#22D3EE] font-mono text-[11px] uppercase tracking-wider border-b border-[#202934] select-none">
                                     {children}
                                   </thead>
                                 );
                               },
                               tbody({ children }) {
-                                return <tbody className="divide-y divide-slate-800/60">{children}</tbody>;
+                                return <tbody className="divide-y divide-[#202934]">{children}</tbody>;
                               },
                               tr({ children }) {
-                                return <tr className="hover:bg-slate-900/40 transition odd:bg-transparent even:bg-slate-900/20">{children}</tr>;
+                                return <tr className="hover:bg-[#171D25] transition">{children}</tr>;
                               },
                               th({ children }) {
-                                return <th className="px-4 py-2.5 font-bold whitespace-nowrap text-cyan-300">{children}</th>;
+                                return <th className="px-4 py-2.5 font-bold whitespace-nowrap text-[#22D3EE]">{children}</th>;
                               },
                               td({ children }) {
-                                return <td className="px-4 py-2.5 text-slate-300 leading-relaxed align-top">{children}</td>;
+                                return <td className="px-4 py-2.5 text-[#A7B0BC] leading-relaxed align-top">{children}</td>;
                               },
-
-                              // Code Blocks
                               pre({ children }) {
                                 return <>{children}</>;
                               },
@@ -685,51 +674,43 @@ export function GitTutor() {
                                 }
                                 return (
                                   <code
-                                    className="rounded-md border border-cyan-500/30 bg-cyan-950/40 px-1.5 py-0.5 font-mono text-xs font-semibold text-cyan-300 inline-block align-middle"
+                                    className="rounded border border-[#202934] bg-[#090D12] px-1.5 py-0.5 font-mono text-xs font-semibold text-[#22D3EE] inline-block align-middle"
                                     {...props}
                                   >
                                     {children}
                                   </code>
                                 );
                               },
-
-                              // Paragraphs
                               p({ children }) {
-                                return <p className="my-2 leading-relaxed text-xs sm:text-sm text-slate-200">{children}</p>;
+                                return <p className="my-2 leading-relaxed text-xs sm:text-sm text-[#E6EDF3]">{children}</p>;
                               },
-
-                              // Callouts
                               blockquote({ children }) {
                                 return (
-                                  <blockquote className="my-3 border-l-4 border-amber-500 bg-amber-500/10 rounded-r-xl px-4 py-2.5 text-amber-200 text-xs leading-relaxed not-italic">
+                                  <blockquote className="my-3 border-l-2 border-[#FBBF24] bg-[#11161D] rounded-r p-3 text-[#E6EDF3] text-xs leading-relaxed not-italic">
                                     {children}
                                   </blockquote>
                                 );
                               },
-
-                              // Headings
                               h1({ children }) {
-                                return <h1 className="text-base font-extrabold text-white mt-4 mb-2 pb-1 border-b border-slate-800">{children}</h1>;
+                                return <h1 className="text-base font-bold text-[#E6EDF3] mt-4 mb-2 pb-1 border-b border-[#202934]">{children}</h1>;
                               },
                               h2({ children }) {
-                                return <h2 className="text-sm font-bold text-cyan-400 mt-3.5 mb-1.5 flex items-center gap-1">{children}</h2>;
+                                return <h2 className="text-sm font-bold text-[#22D3EE] mt-3.5 mb-1.5 flex items-center gap-1">{children}</h2>;
                               },
                               h3({ children }) {
-                                return <h3 className="text-xs font-semibold text-slate-200 mt-2.5 mb-1">{children}</h3>;
+                                return <h3 className="text-xs font-semibold text-[#E6EDF3] mt-2.5 mb-1">{children}</h3>;
                               },
-
-                              // Lists
                               ul({ children }) {
-                                return <ul className="my-2 list-disc pl-5 space-y-1 text-xs sm:text-sm text-slate-300 leading-relaxed">{children}</ul>;
+                                return <ul className="my-2 list-disc pl-5 space-y-1 text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">{children}</ul>;
                               },
                               ol({ children }) {
-                                return <ol className="my-2 list-decimal pl-5 space-y-1 text-xs sm:text-sm text-slate-300 leading-relaxed">{children}</ol>;
+                                return <ol className="my-2 list-decimal pl-5 space-y-1 text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">{children}</ol>;
                               },
                               li({ children }) {
                                 return <li className="leading-relaxed">{children}</li>;
                               },
                               strong({ children }) {
-                                return <strong className="font-bold text-white">{children}</strong>;
+                                return <strong className="font-bold text-[#E6EDF3]">{children}</strong>;
                               },
                             }}
                           >
@@ -737,8 +718,8 @@ export function GitTutor() {
                           </ReactMarkdown>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 text-xs text-cyan-400 font-mono">
-                          <span className="h-3 w-3 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+                        <div className="flex items-center gap-2 text-xs text-[#22D3EE] font-mono">
+                          <span className="h-3 w-3 animate-spin rounded-full border-2 border-[#22D3EE] border-t-transparent" />
                           <span>Generating response...</span>
                         </div>
                       )}
@@ -746,7 +727,7 @@ export function GitTutor() {
 
                     {/* User Avatar */}
                     {isUser && (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-slate-800 text-xs font-bold text-slate-300 border border-slate-700 mt-0.5">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#171D25] text-xs font-bold text-[#A7B0BC] border border-[#293542] mt-0.5">
                         You
                       </div>
                     )}
@@ -755,51 +736,28 @@ export function GitTutor() {
               })
             )}
 
-            {/* Error Message with Quick Model Switch Option */}
+            {/* Error Message */}
             {error && (
-              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-xs text-rose-300 space-y-2">
+              <div className="rounded-md border border-[#F87171]/40 bg-[#11161D] p-4 text-xs text-[#F87171] space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-bold">✕ Request Error</span>
-                  <button onClick={() => setError('')} className="text-rose-400 hover:text-white">
+                  <button onClick={() => setError('')} className="text-[#F87171] hover:text-white cursor-pointer">
                     Dismiss
                   </button>
                 </div>
-                <div className="text-rose-200/80 leading-relaxed">{error}</div>
-                <div className="pt-1 flex items-center gap-2">
-                  <span className="text-[11px] text-slate-400">Quick Model Switch:</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedModel('openai/gpt-oss-20b');
-                      setError('');
-                    }}
-                    className="rounded-lg bg-rose-500/20 px-2 py-1 text-[11px] font-semibold text-rose-200 hover:bg-rose-500/30"
-                  >
-                    Switch to GPT OSS 20B
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedModel('qwen/qwen3.8-27b');
-                      setError('');
-                    }}
-                    className="rounded-lg bg-rose-500/20 px-2 py-1 text-[11px] font-semibold text-rose-200 hover:bg-rose-500/30"
-                  >
-                    Switch to Qwen 3.8
-                  </button>
-                </div>
+                <div className="leading-relaxed">{error}</div>
               </div>
             )}
           </div>
 
-          {/* ChatGPT / Gemini Style Bottom Centered Pill Input */}
-          <div className="p-4 sm:p-5 shrink-0 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent">
+          {/* Bottom Input */}
+          <div className="p-4 sm:p-5 shrink-0 bg-[#0B0F14] border-t border-[#202934]">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 void ask();
               }}
-              className="max-w-3xl mx-auto relative flex items-end rounded-2xl border border-slate-800 bg-slate-900/90 shadow-2xl shadow-slate-950/60 p-2 transition focus-within:border-cyan-500/50 focus-within:ring-1 focus-within:ring-cyan-500/30"
+              className="max-w-3xl mx-auto relative flex items-end rounded-lg border border-[#293542] bg-[#11161D] p-2 transition focus-within:border-[#22D3EE]/50"
             >
               <textarea
                 ref={textareaRef}
@@ -809,17 +767,17 @@ export function GitTutor() {
                 onKeyDown={handleKeyDown}
                 disabled={loading}
                 placeholder="Ask GitNovi AI anything about Git (e.g. merge conflicts, rebase, plumbing)..."
-                className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-white placeholder-slate-500 outline-none resize-none max-h-36 leading-relaxed disabled:opacity-50"
+                className="flex-1 bg-transparent px-3 py-2 text-xs sm:text-sm text-[#E6EDF3] placeholder-[#737F8C] outline-none resize-none max-h-36 leading-relaxed disabled:opacity-50 font-sans"
               />
 
               <button
                 type="submit"
                 disabled={loading || !question.trim()}
-                className="h-9 w-9 shrink-0 flex items-center justify-center rounded-xl bg-cyan-500 text-slate-950 font-bold transition hover:bg-cyan-400 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer mb-0.5 mr-0.5 shadow-md shadow-cyan-500/20"
+                className="h-9 w-9 shrink-0 flex items-center justify-center rounded-md bg-[#22D3EE] text-[#0B0F14] font-bold transition hover:bg-[#67E8F9] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer mb-0.5 mr-0.5"
                 title="Send message"
               >
                 {loading ? (
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950 border-t-transparent" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#0B0F14] border-t-transparent" />
                 ) : (
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />
@@ -828,7 +786,7 @@ export function GitTutor() {
               </button>
             </form>
 
-            <div className="text-center mt-2 text-[11px] text-slate-500">
+            <div className="text-center mt-2 text-[11px] text-[#737F8C]">
               GitNovi AI can assist with commands, errors, and concepts. Verify sensitive repository operations.
             </div>
           </div>

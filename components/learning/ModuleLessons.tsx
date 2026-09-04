@@ -22,52 +22,35 @@ type Lesson = {
   content?: LessonContent | null;
 };
 
-function ExampleBox({ example }: { example: string }) {
+function CodeExampleBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(example);
+      await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Ignore clipboard error
+      // Ignore
     }
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-xl border border-slate-800 bg-slate-950/40 p-3">
-      <div>
-        <div className="flex items-center justify-between">
-          <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-300 font-mono">
-            Example
-          </div>
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-cyan-300 transition cursor-pointer font-mono"
-            title="Copy command"
-          >
-            {copied ? (
-              <span className="text-emerald-400 font-semibold">✓ Copied</span>
-            ) : (
-              <span>📋 Copy</span>
-            )}
-          </button>
-        </div>
-        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-words font-mono text-xs leading-6 text-slate-200">
-          {example}
-        </pre>
-      </div>
-
-      <div className="mt-3 pt-2 border-t border-slate-900 flex items-center justify-end">
-        <Link
-          href="/terminal"
-          className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-400 hover:text-cyan-300 transition"
+    <div className="rounded-md border border-[#202934] bg-[#090D12] overflow-hidden my-2.5">
+      <div className="flex items-center justify-between border-b border-[#202934] bg-[#11161D] px-3 py-1 text-[11px] text-[#737F8C] font-mono">
+        <span>bash</span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="hover:text-[#E6EDF3] transition cursor-pointer"
         >
-          <span>Try in Terminal</span>
-          <span>↗</span>
-        </Link>
+          {copied ? '✓ Copied' : 'Copy'}
+        </button>
+      </div>
+      <div className="p-3 overflow-x-auto">
+        <pre className="font-mono text-xs text-[#E6EDF3] leading-relaxed whitespace-pre">
+          {code}
+        </pre>
       </div>
     </div>
   );
@@ -75,51 +58,36 @@ function ExampleBox({ example }: { example: string }) {
 
 export function ModuleLessons({ lessons }: { lessons: Lesson[] }) {
   return (
-    <div className="mt-8 grid gap-4">
+    <div className="space-y-8 divide-y divide-[#202934]">
       {lessons.map((lesson, index) => {
         const content =
           typeof lesson.content === 'object' && lesson.content !== null
             ? lesson.content
             : null;
 
-        const summary =
-          content?.summary || content?.why || lesson.objective;
-
-        const why =
-          content?.why ||
-          'This concept matters because it changes how you understand repository state, safety, and collaboration.';
-
-        const practice =
-          content?.practice ||
-          'Practice this concept in the terminal and describe what changed before moving forward.';
-
-        const example =
-          content?.command || content?.example || 'git status';
+        const summary = content?.summary || content?.why || lesson.objective;
+        const why = content?.why;
+        const practice = content?.practice;
+        const example = content?.command || content?.example || 'git status';
 
         return (
-          <div
+          <article
             key={lesson.id}
             id={lesson.id}
-            className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 shadow-lg shadow-slate-950/20 transition hover:border-slate-700/80"
+            className={`pt-8 first:pt-0 space-y-4`}
           >
-            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-slate-500 font-mono">
-                  <span className="text-cyan-400 font-bold">Lesson {String(index + 1).padStart(2, '0')}</span>
-                  <span>•</span>
-                  <span>{lesson.estimated_minutes} min read</span>
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2.5">
+              <div>
+                <div className="text-xs font-mono text-[#737F8C]">
+                  Lesson {String(index + 1).padStart(2, '0')} · {lesson.estimated_minutes} min
                 </div>
-
-                <h2 className="mt-2 text-xl font-bold text-slate-100">
+                <h2 className="text-lg sm:text-xl font-bold text-[#E6EDF3] mt-1">
                   {lesson.title}
                 </h2>
-
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  {summary}
-                </p>
               </div>
 
-              <div className="shrink-0">
+              <div className="shrink-0 pt-1 sm:pt-0">
                 <LessonCompleteButton
                   lessonId={lesson.id}
                   initialCompleted={lesson.completed}
@@ -127,59 +95,71 @@ export function ModuleLessons({ lessons }: { lessons: Lesson[] }) {
               </div>
             </div>
 
-            <div className="mt-4 grid gap-3 md:grid-cols-3">
-              {/* Why Box */}
-              <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
-                <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-300 font-mono">
-                  Why it matters
-                </div>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{why}</p>
+            {/* Explanation / Summary */}
+            <p className="text-sm leading-relaxed text-[#E6EDF3]">
+              {summary}
+            </p>
+
+            {/* Why it matters (if different from summary) */}
+            {why && why !== summary && (
+              <div className="text-xs text-[#A7B0BC] leading-relaxed">
+                <strong className="text-[#E6EDF3] font-semibold">Why this matters: </strong>
+                {why}
               </div>
+            )}
 
-              {/* Example Box with Copy & Terminal Link */}
-              <ExampleBox example={example} />
+            {/* Example Command Block */}
+            <div>
+              <div className="text-xs font-semibold text-[#737F8C] uppercase tracking-wider font-mono">
+                Command Example
+              </div>
+              <CodeExampleBlock code={example} />
+            </div>
 
-              {/* Practice Box */}
-              <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
-                <div className="text-[10px] font-bold uppercase tracking-[0.15em] text-cyan-300 font-mono">
+            {/* Practice Steps */}
+            {practice && (
+              <div className="space-y-1.5 pt-1">
+                <div className="text-xs font-semibold text-[#737F8C] uppercase tracking-wider font-mono">
                   Practice Steps
                 </div>
-                <div className="mt-2 space-y-2 text-sm leading-relaxed text-slate-300">
+                <div className="space-y-1 text-xs text-[#E6EDF3] leading-relaxed">
                   {practice.split('\n').filter(Boolean).map((line, i) => {
                     const match = line.match(/^(\d+\.|\-|\•)\s*(.*)/);
                     if (match) {
                       return (
                         <div key={i} className="flex items-start gap-2">
-                          <span className="font-bold text-cyan-400 shrink-0 select-none text-xs mt-0.5 font-mono">
-                            {match[1]}
-                          </span>
-                          <span className="flex-1 text-slate-300 text-xs sm:text-sm">{match[2]}</span>
+                          <span className="font-mono text-[#22D3EE] shrink-0 font-semibold">{match[1]}</span>
+                          <span>{match[2]}</span>
                         </div>
                       );
                     }
-                    return (
-                      <p key={i} className="text-slate-300 text-xs sm:text-sm">
-                        {line}
-                      </p>
-                    );
+                    return <p key={i}>{line}</p>;
                   })}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Common Mistake Alert */}
+            {/* Common Pitfall */}
             {content?.commonMistake && (
-              <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-amber-300 font-mono">
-                  <span>⚠️</span>
-                  <span>Common pitfall to avoid</span>
+              <div className="border-l-2 border-[#FBBF24] bg-[#11161D] p-3 text-xs leading-relaxed text-[#E6EDF3] rounded-r">
+                <div className="font-semibold text-[#FBBF24] font-mono text-[11px] mb-0.5">
+                  Common pitfall:
                 </div>
-                <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-300">
-                  {content.commonMistake}
-                </p>
+                <div>{content.commonMistake}</div>
               </div>
             )}
-          </div>
+
+            {/* Terminal Sandbox Quick Link */}
+            <div className="pt-2 text-xs">
+              <Link
+                href="/terminal"
+                className="text-[#22D3EE] hover:underline inline-flex items-center gap-1 font-medium"
+              >
+                <span>Try this in the Terminal Sandbox</span>
+                <span>→</span>
+              </Link>
+            </div>
+          </article>
         );
       })}
     </div>

@@ -111,10 +111,10 @@ export function CompleteChallengeButton({
           type="button"
           onClick={() => void verifyAndComplete(false)}
           disabled={loading}
-          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition shadow cursor-pointer ${
+          className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold transition cursor-pointer ${
             done
-              ? 'border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
-              : 'bg-cyan-500 text-slate-950 hover:bg-cyan-400 shadow-cyan-500/20'
+              ? 'border border-[#34D399]/40 bg-[#34D399]/10 text-[#34D399] hover:bg-[#34D399]/20'
+              : 'bg-[#22D3EE] text-[#0B0F14] hover:bg-[#67E8F9]'
           }`}
         >
           {loading ? (
@@ -141,7 +141,7 @@ export function CompleteChallengeButton({
             type="button"
             onClick={() => void verifyAndComplete(true)}
             title="Mark as completed manually"
-            className="text-[11px] text-slate-500 hover:text-slate-300 transition underline underline-offset-2 cursor-pointer p-1"
+            className="text-[11px] text-[#737F8C] hover:text-[#A7B0BC] transition underline underline-offset-2 cursor-pointer p-1"
           >
             Mark done
           </button>
@@ -151,29 +151,29 @@ export function CompleteChallengeButton({
       {/* Verification Message Alert */}
       {message && (
         <div
-          className={`absolute right-0 top-full mt-2 z-20 w-72 rounded-xl p-3 text-xs leading-relaxed shadow-xl border ${
+          className={`absolute right-0 top-full mt-2 z-20 w-72 rounded-md p-3 text-xs leading-relaxed border bg-[#11161D] ${
             message.type === 'error'
-              ? 'border-rose-500/30 bg-slate-950 text-rose-300 shadow-rose-950/40'
-              : 'border-emerald-500/30 bg-slate-950 text-emerald-300 shadow-emerald-950/40'
+              ? 'border-[#F87171]/40 text-[#F87171]'
+              : 'border-[#34D399]/40 text-[#34D399]'
           }`}
         >
           <div className="flex items-start justify-between gap-2">
             <span>{message.text}</span>
             <button
               onClick={() => setMessage(null)}
-              className="text-slate-500 hover:text-white shrink-0 cursor-pointer"
+              className="text-[#737F8C] hover:text-[#E6EDF3] shrink-0 cursor-pointer"
             >
               ✕
             </button>
           </div>
           {message.type === 'error' && (
-            <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px]">
-              <Link href="/terminal" className="text-cyan-400 hover:underline">
+            <div className="mt-2 pt-2 border-t border-[#202934] flex items-center justify-between text-[11px]">
+              <Link href="/terminal" className="text-[#22D3EE] hover:underline">
                 Open Sandbox Terminal →
               </Link>
               <button
                 onClick={() => void verifyAndComplete(true)}
-                className="text-slate-400 hover:text-white underline cursor-pointer"
+                className="text-[#A7B0BC] hover:text-[#E6EDF3] underline cursor-pointer"
               >
                 Bypass & Complete
               </button>

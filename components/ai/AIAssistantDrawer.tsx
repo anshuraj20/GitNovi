@@ -37,23 +37,23 @@ function CodeBlock({ children, className }: { children: React.ReactNode; classNa
   };
 
   return (
-    <div className="relative my-2.5 overflow-hidden rounded-xl border border-slate-800 bg-[#070b14] font-mono text-xs shadow-md">
-      <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-3 py-1 text-[10px] text-slate-400 select-none">
-        <span className="font-bold uppercase tracking-wider text-cyan-400 font-mono">{language}</span>
+    <div className="relative my-2.5 overflow-hidden rounded-md border border-[#202934] bg-[#090D12] font-mono text-xs">
+      <div className="flex items-center justify-between border-b border-[#202934] bg-[#11161D] px-3 py-1 text-[10px] text-[#737F8C] select-none">
+        <span className="font-bold uppercase tracking-wider text-[#22D3EE] font-mono">{language}</span>
         <button
           type="button"
           onClick={handleCopy}
-          className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-cyan-300 transition cursor-pointer font-sans"
+          className="flex items-center gap-1 text-[10px] text-[#737F8C] hover:text-[#E6EDF3] transition cursor-pointer font-sans"
         >
           {copied ? (
-            <span className="text-emerald-400 font-semibold">✓ Copied</span>
+            <span className="text-[#34D399] font-semibold">✓ Copied</span>
           ) : (
-            <span>📋 Copy code</span>
+            <span>Copy code</span>
           )}
         </button>
       </div>
-      <div className="overflow-x-auto p-3 text-slate-200 leading-relaxed font-mono">
-        <pre className="whitespace-pre font-mono text-xs text-slate-200">
+      <div className="overflow-x-auto p-3 text-[#E6EDF3] leading-relaxed font-mono">
+        <pre className="whitespace-pre font-mono text-xs text-[#E6EDF3]">
           <code>{codeText}</code>
         </pre>
       </div>
@@ -312,50 +312,47 @@ export function AIAssistantDrawer() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full border border-cyan-500/50 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950 px-4 py-3 text-xs font-bold text-cyan-300 shadow-2xl shadow-cyan-950/80 backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-cyan-400 hover:shadow-cyan-500/30 active:scale-95 cursor-pointer group"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 rounded-full border border-[#293542] bg-[#11161D] px-4 py-2.5 text-xs font-semibold text-[#E6EDF3] transition-all hover:border-[#22D3EE]/50 hover:bg-[#171D25] cursor-pointer group shadow-lg"
           title="Ask AI Git Mentor (Ctrl+J)"
         >
-          <div className="relative flex h-2.5 w-2.5 items-center justify-center">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-400" />
-          </div>
-          <span className="font-semibold text-white tracking-wide">Ask AI Tutor</span>
-          <span className="hidden sm:inline-block rounded-md bg-cyan-500/20 px-1.5 py-0.5 font-mono text-[10px] text-cyan-400 border border-cyan-500/30">
+          <span className="h-2 w-2 rounded-full bg-[#22D3EE] inline-block" />
+          <span className="font-semibold text-[#E6EDF3] tracking-wide">Ask AI Tutor</span>
+          <span className="hidden sm:inline-block rounded bg-[#090D12] px-1.5 py-0.5 font-mono text-[10px] text-[#737F8C] border border-[#202934]">
             Ctrl+J
           </span>
         </button>
       )}
 
-      {/* Dimmed Backdrop Overlay (Click to dismiss) */}
+      {/* Dimmed Backdrop Overlay */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+          className="fixed inset-0 z-40 bg-[#0B0F14]/70 backdrop-blur-sm transition-opacity"
           aria-hidden="true"
         />
       )}
 
       {/* Slide-in Assistant Drawer */}
       <div
-        className={`fixed inset-y-0 right-0 z-50 flex w-full sm:w-[480px] lg:w-[520px] flex-col border-l border-slate-800/90 bg-[#070b14]/95 shadow-2xl shadow-cyan-950/30 backdrop-blur-2xl transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 z-50 flex w-full sm:w-[480px] lg:w-[520px] flex-col border-l border-[#293542] bg-[#0B0F14] transition-transform duration-300 ease-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
         }`}
       >
         {/* Drawer Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/80 px-4 py-3 backdrop-blur-md">
+        <div className="flex items-center justify-between border-b border-[#202934] bg-[#11161D] px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-cyan-500/40 bg-cyan-500/10 font-mono text-sm font-bold text-cyan-400 shadow-sm">
-              λ
+            <div className="flex h-8 w-8 items-center justify-center rounded-md border border-[#22D3EE]/40 bg-[#083344] font-mono text-xs font-bold text-[#22D3EE]">
+              &gt;_
             </div>
             <div>
-              <div className="text-xs font-bold text-white flex items-center gap-2">
+              <div className="text-xs font-bold text-[#E6EDF3] flex items-center gap-2">
                 <span>GitNovi AI Mentor</span>
-                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 inline-block animate-pulse" />
+                <span className="rounded bg-[#34D399]/10 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#34D399] border border-[#34D399]/30 flex items-center gap-1">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#34D399] inline-block" />
                   Live
                 </span>
               </div>
-              <div className="text-[10px] text-slate-400 font-mono">
+              <div className="text-[10px] text-[#737F8C] font-mono">
                 {activeModelLabel || 'Auto-fallback cascade enabled'}
               </div>
             </div>
@@ -365,7 +362,7 @@ export function AIAssistantDrawer() {
             <button
               type="button"
               onClick={handleNewChat}
-              className="rounded-lg border border-slate-800 bg-slate-900/90 px-2.5 py-1 text-[11px] font-medium text-slate-300 transition hover:border-slate-700 hover:text-white cursor-pointer"
+              className="rounded-md border border-[#293542] bg-[#11161D] px-2.5 py-1 text-[11px] font-medium text-[#737F8C] transition hover:text-[#E6EDF3] hover:bg-[#171D25] cursor-pointer"
               title="Start fresh conversation"
             >
               + New Chat
@@ -373,7 +370,7 @@ export function AIAssistantDrawer() {
 
             <Link
               href="/ai"
-              className="rounded-lg border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-semibold text-cyan-300 transition hover:bg-cyan-500/20"
+              className="rounded-md border border-[#22D3EE]/40 bg-[#083344] px-2.5 py-1 text-[11px] font-semibold text-[#22D3EE] transition hover:bg-[#22D3EE] hover:text-[#0B0F14]"
               title="Open full AI workspace"
             >
               Expand ↗
@@ -382,7 +379,7 @@ export function AIAssistantDrawer() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="rounded-lg border border-slate-800 bg-slate-900/60 p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-white cursor-pointer ml-1"
+              className="rounded-md border border-[#293542] bg-[#11161D] p-1.5 text-[#737F8C] transition hover:text-[#E6EDF3] hover:bg-[#171D25] cursor-pointer ml-1"
               title="Close drawer (Esc)"
             >
               <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -393,27 +390,27 @@ export function AIAssistantDrawer() {
         </div>
 
         {/* Page Context & Model Selector Bar */}
-        <div className="border-b border-slate-800/80 bg-slate-950/90 px-4 py-2 flex flex-col gap-2">
+        <div className="border-b border-[#202934] bg-[#11161D] px-4 py-2 flex flex-col gap-2">
           {/* Active Location Badge */}
           <div className="flex items-center justify-between text-[11px]">
-            <div className="flex items-center gap-1.5 text-slate-400 truncate">
-              <span className="text-cyan-400 font-mono text-xs">📍</span>
-              <span className="font-semibold text-slate-300 truncate max-w-[280px]">
+            <div className="flex items-center gap-1.5 text-[#737F8C] truncate">
+              <span className="text-[#22D3EE] font-mono text-xs">📍</span>
+              <span className="font-semibold text-[#A7B0BC] truncate max-w-[280px]">
                 {pageContext.title}
               </span>
             </div>
-            <span className="rounded bg-slate-900 px-2 py-0.5 text-[9px] font-mono uppercase text-slate-400 border border-slate-800">
+            <span className="rounded bg-[#090D12] px-2 py-0.5 text-[9px] font-mono uppercase text-[#737F8C] border border-[#202934]">
               {pageContext.type}
             </span>
           </div>
 
           {/* Model Selector Dropdown */}
-          <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-900">
-            <span className="text-slate-500 font-mono text-[10px]">AI Engine:</span>
+          <div className="flex items-center justify-between text-[11px] pt-1 border-t border-[#202934]">
+            <span className="text-[#737F8C] font-mono text-[10px]">AI Engine:</span>
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
-              className="rounded-lg bg-slate-900 px-2.5 py-1 text-[10px] font-mono text-cyan-300 border border-slate-800 outline-none focus:border-cyan-500/50 cursor-pointer"
+              className="rounded-md bg-[#090D12] px-2.5 py-1 text-[10px] font-mono text-[#22D3EE] border border-[#293542] outline-none focus:border-[#22D3EE]/50 cursor-pointer"
             >
               {GROQ_MODELS.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -428,17 +425,17 @@ export function AIAssistantDrawer() {
         <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans text-xs">
           {messages.length === 0 ? (
             <div className="flex h-full flex-col justify-center items-center text-center px-4 py-8">
-              <div className="h-12 w-12 rounded-2xl border border-cyan-500/30 bg-cyan-500/10 flex items-center justify-center text-2xl text-cyan-400 font-mono mb-3 shadow-lg shadow-cyan-950/40">
-                λ
+              <div className="h-12 w-12 rounded-lg border border-[#22D3EE]/40 bg-[#083344] flex items-center justify-center text-xl text-[#22D3EE] font-mono mb-3">
+                &gt;_
               </div>
-              <h3 className="text-sm font-bold text-slate-200">How can I help you right now?</h3>
-              <p className="mt-1.5 text-xs text-slate-400 max-w-xs leading-relaxed">
+              <h3 className="text-sm font-bold text-[#E6EDF3]">How can I help you right now?</h3>
+              <p className="mt-1.5 text-xs text-[#A7B0BC] max-w-xs leading-relaxed">
                 Ask any question about commands, lesson steps, error messages, or Git internals without leaving your current workspace.
               </p>
 
               {/* Context-aware suggestions */}
               <div className="mt-6 flex flex-col gap-1.5 w-full max-w-sm text-left">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono mb-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#737F8C] font-mono mb-1">
                   Suggested Questions for {pageContext.type}:
                 </span>
                 {contextualPrompts.map((q) => (
@@ -446,10 +443,10 @@ export function AIAssistantDrawer() {
                     key={q}
                     type="button"
                     onClick={() => void handleSend(q)}
-                    className="rounded-xl border border-slate-800/80 bg-slate-900/60 p-2.5 text-left text-xs text-slate-300 transition hover:border-cyan-500/50 hover:bg-slate-900 hover:text-cyan-200 cursor-pointer flex items-center justify-between group"
+                    className="rounded-md border border-[#293542] bg-[#11161D] p-2.5 text-left text-xs text-[#A7B0BC] transition hover:border-[#22D3EE]/50 hover:bg-[#171D25] hover:text-[#E6EDF3] cursor-pointer flex items-center justify-between group"
                   >
                     <span className="truncate pr-2">{q}</span>
-                    <span className="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    <span className="text-[#22D3EE] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
                   </button>
                 ))}
               </div>
@@ -462,21 +459,21 @@ export function AIAssistantDrawer() {
                   msg.role === 'user' ? 'items-end' : 'items-start'
                 }`}
               >
-                <div className="mb-1 flex items-center gap-1.5 text-[10px] text-slate-500 font-mono">
+                <div className="mb-1 flex items-center gap-1.5 text-[10px] text-[#737F8C] font-mono">
                   <span>{msg.role === 'user' ? 'You' : 'GitNovi AI Mentor'}</span>
                 </div>
 
                 <div
-                  className={`max-w-[92%] rounded-2xl px-4 py-3 leading-relaxed ${
+                  className={`max-w-[92%] rounded-lg px-4 py-3 leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-slate-950 font-medium shadow-lg shadow-cyan-950/20'
-                      : 'border border-slate-800 bg-slate-900/80 text-slate-200 shadow-md'
+                      ? 'border border-[#293542] bg-[#171D25] text-[#E6EDF3]'
+                      : 'border border-[#293542] bg-[#11161D] text-[#E6EDF3]'
                   }`}
                 >
                   {msg.role === 'user' ? (
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
+                    <p className="whitespace-pre-wrap font-sans text-[#E6EDF3]">{msg.content}</p>
                   ) : (
-                    <div className="prose prose-invert prose-xs max-w-none space-y-2">
+                    <div className="prose prose-invert prose-xs max-w-none space-y-2 text-[#E6EDF3]">
                       {msg.content ? (
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
@@ -485,7 +482,7 @@ export function AIAssistantDrawer() {
                               const isInline = !className && typeof children === 'string' && !children.includes('\n');
                               if (isInline) {
                                 return (
-                                  <code className="rounded bg-slate-800/90 px-1.5 py-0.5 font-mono text-[11px] text-cyan-300 border border-slate-700/50" {...props}>
+                                  <code className="rounded bg-[#090D12] px-1.5 py-0.5 font-mono text-[11px] text-[#22D3EE] border border-[#202934]" {...props}>
                                     {children}
                                   </code>
                                 );
@@ -494,8 +491,8 @@ export function AIAssistantDrawer() {
                             },
                             table({ children }) {
                               return (
-                                <div className="my-2 overflow-x-auto rounded-lg border border-slate-800">
-                                  <table className="min-w-full text-left text-xs divide-y divide-slate-800">
+                                <div className="my-2 overflow-x-auto rounded-md border border-[#202934] bg-[#090D12]">
+                                  <table className="min-w-full text-left text-xs divide-y divide-[#202934]">
                                     {children}
                                   </table>
                                 </div>
@@ -503,21 +500,52 @@ export function AIAssistantDrawer() {
                             },
                             th({ children }) {
                               return (
-                                <th className="bg-slate-950/80 px-3 py-1.5 font-mono font-bold text-cyan-400 text-[10px] uppercase">
+                                <th className="bg-[#11161D] px-3 py-1.5 font-mono font-bold text-[#22D3EE] text-[10px] uppercase">
                                   {children}
                                 </th>
                               );
                             },
                             td({ children }) {
-                              return <td className="px-3 py-1.5 border-t border-slate-800/60 text-slate-300">{children}</td>;
+                              return <td className="px-3 py-1.5 border-t border-[#202934] text-[#A7B0BC]">{children}</td>;
+                            },
+                            p({ children }) {
+                              return <p className="my-2 leading-relaxed text-xs text-[#E6EDF3]">{children}</p>;
+                            },
+                            blockquote({ children }) {
+                              return (
+                                <blockquote className="my-3 border-l-2 border-[#FBBF24] bg-[#11161D] rounded-r p-3 text-[#E6EDF3] text-xs leading-relaxed not-italic">
+                                  {children}
+                                </blockquote>
+                              );
+                            },
+                            h1({ children }) {
+                              return <h1 className="text-sm font-bold text-[#E6EDF3] mt-3 mb-1 pb-1 border-b border-[#202934]">{children}</h1>;
+                            },
+                            h2({ children }) {
+                              return <h2 className="text-xs font-bold text-[#22D3EE] mt-2.5 mb-1 flex items-center gap-1">{children}</h2>;
+                            },
+                            h3({ children }) {
+                              return <h3 className="text-xs font-semibold text-[#E6EDF3] mt-2 mb-0.5">{children}</h3>;
+                            },
+                            ul({ children }) {
+                              return <ul className="my-2 list-disc pl-5 space-y-1 text-xs text-[#A7B0BC] leading-relaxed">{children}</ul>;
+                            },
+                            ol({ children }) {
+                              return <ol className="my-2 list-decimal pl-5 space-y-1 text-xs text-[#A7B0BC] leading-relaxed">{children}</ol>;
+                            },
+                            li({ children }) {
+                              return <li className="leading-relaxed">{children}</li>;
+                            },
+                            strong({ children }) {
+                              return <strong className="font-bold text-[#E6EDF3]">{children}</strong>;
                             },
                           }}
                         >
                           {msg.content}
                         </ReactMarkdown>
                       ) : (
-                        <div className="flex items-center gap-2 text-slate-400 py-1 font-mono text-xs">
-                          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+                        <div className="flex items-center gap-2 text-[#737F8C] py-1 font-mono text-xs">
+                          <span className="h-2 w-2 rounded-full bg-[#22D3EE] animate-pulse" />
                           <span>Thinking & formulating guidance...</span>
                         </div>
                       )}
@@ -532,14 +560,14 @@ export function AIAssistantDrawer() {
 
         {/* Error Notification */}
         {error && (
-          <div className="border-t border-rose-500/30 bg-rose-500/10 px-4 py-2 text-xs text-rose-300 flex items-center justify-between">
+          <div className="border-t border-[#F87171]/40 bg-[#11161D] px-4 py-2 text-xs text-[#F87171] flex items-center justify-between">
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="text-xs hover:text-white">✕</button>
+            <button onClick={() => setError(null)} className="text-xs hover:text-white cursor-pointer">✕</button>
           </div>
         )}
 
         {/* Text Input Footer Bar */}
-        <div className="border-t border-slate-800 bg-slate-900/70 p-3 backdrop-blur-md">
+        <div className="border-t border-[#202934] bg-[#11161D] p-3">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -555,17 +583,17 @@ export function AIAssistantDrawer() {
               placeholder="Ask about a command, concept, or error... (Enter to send)"
               rows={2}
               disabled={loading}
-              className="w-full resize-none rounded-xl border border-slate-800 bg-slate-950/90 p-2.5 text-xs text-slate-100 placeholder-slate-500 outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40 disabled:opacity-60"
+              className="w-full resize-none rounded-md border border-[#293542] bg-[#090D12] p-2.5 text-xs text-[#E6EDF3] placeholder-[#737F8C] outline-none transition focus:border-[#22D3EE]/50 disabled:opacity-60 font-sans"
             />
 
             <button
               type="submit"
               disabled={!input.trim() || loading}
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-500 text-slate-950 font-bold transition hover:bg-cyan-400 active:scale-95 disabled:opacity-40 disabled:hover:bg-cyan-500 cursor-pointer disabled:cursor-not-allowed shadow-md shadow-cyan-500/20"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#22D3EE] text-[#0B0F14] font-bold transition hover:bg-[#67E8F9] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
               title="Send message (Enter)"
             >
               {loading ? (
-                <span className="h-4 w-4 rounded-full border-2 border-slate-950 border-t-transparent animate-spin" />
+                <span className="h-4 w-4 rounded-full border-2 border-[#0B0F14] border-t-transparent animate-spin" />
               ) : (
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14M12 5l7 7-7 7" />

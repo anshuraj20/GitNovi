@@ -6,8 +6,8 @@ import { commandCatalog } from '@/lib/git-engine/command-catalog';
 
 export function CommandExplorer() {
   const [q, setQ] = useState('');
-  const [filterDifficulty, setFilterDifficulty] = useState<string>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [expandedCmd, setExpandedCmd] = useState<string | null>(null);
 
   const results = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -19,216 +19,135 @@ export function CommandExplorer() {
         c.syntax.toLowerCase().includes(query) ||
         c.examples.some((ex) => ex.toLowerCase().includes(query));
 
-      const matchesDifficulty =
-        filterDifficulty === 'all' || c.difficulty === filterDifficulty;
-
       const matchesCategory =
         filterCategory === 'all' ||
         (filterCategory === 'dangerous' ? c.dangerous : c.category === filterCategory);
 
-      return matchesQuery && matchesDifficulty && matchesCategory;
+      return matchesQuery && matchesCategory;
     });
-  }, [q, filterDifficulty, filterCategory]);
+  }, [q, filterCategory]);
 
   return (
-    <div className="mt-8">
-      {/* Search & Filters */}
-      <div className="flex flex-col gap-4">
-        <div className="relative">
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search commands, syntax, or keywords (e.g. init, commit, rebase, plumbing)..."
-            className="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-3 pl-11 text-sm text-slate-100 placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
-          />
-          <svg
-            className="absolute left-4 top-3.5 h-4 w-4 text-slate-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-          {q && (
+    <div className="space-y-4">
+      {/* Search Bar & Filter Row */}
+      <div className="flex flex-col sm:flex-row gap-2">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Filter commands by name, syntax, or keyword (init, rebase, plumbing)..."
+          className="flex-1 rounded-md border border-[#293542] bg-[#11161D] px-3 py-2 text-xs font-mono text-[#E6EDF3] placeholder-[#737F8C] outline-none focus:border-[#22D3EE]/50"
+        />
+
+        <div className="flex items-center gap-1 text-xs overflow-x-auto pb-1 sm:pb-0">
+          {[
+            { id: 'all', label: 'All' },
+            { id: 'porcelain', label: 'Porcelain' },
+            { id: 'plumbing', label: 'Plumbing' },
+            { id: 'dangerous', label: 'Dangerous' },
+          ].map((cat) => (
             <button
-              onClick={() => setQ('')}
-              className="absolute right-3 top-3 text-xs text-slate-500 hover:text-slate-300 cursor-pointer"
+              key={cat.id}
+              type="button"
+              onClick={() => setFilterCategory(cat.id)}
+              className={`rounded px-2.5 py-1 text-xs transition cursor-pointer ${
+                filterCategory === cat.id
+                  ? 'bg-[#083344] text-[#22D3EE] font-medium'
+                  : 'text-[#737F8C] hover:text-[#E6EDF3] hover:bg-[#11161D]'
+              }`}
             >
-              Clear
+              {cat.label}
             </button>
-          )}
-        </div>
-
-        {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
-          <div className="flex flex-wrap gap-1.5">
-            {['all', 'beginner', 'intermediate', 'advanced'].map((lvl) => (
-              <button
-                key={lvl}
-                onClick={() => setFilterDifficulty(lvl)}
-                className={`rounded-lg px-3 py-1.5 capitalize transition cursor-pointer ${
-                  filterDifficulty === lvl
-                    ? 'border border-cyan-500/50 bg-cyan-500/20 font-semibold text-cyan-300'
-                    : 'border border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                }`}
-              >
-                {lvl}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap gap-1.5">
-            {[
-              { id: 'all', label: 'All types' },
-              { id: 'porcelain', label: 'Porcelain' },
-              { id: 'plumbing', label: 'Plumbing' },
-              { id: 'dangerous', label: 'Dangerous' },
-            ].map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setFilterCategory(cat.id)}
-                className={`rounded-lg px-3 py-1.5 transition cursor-pointer ${
-                  filterCategory === cat.id
-                    ? 'border border-cyan-500/50 bg-cyan-500/20 font-semibold text-cyan-300'
-                    : 'border border-slate-800 bg-slate-900/40 text-slate-400 hover:border-slate-700 hover:text-slate-200'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
 
-      {/* Results Header */}
-      <div className="mt-6 flex items-center justify-between text-xs text-slate-500">
-        <span>
-          Showing {results.length} of {commandCatalog.length} commands
-        </span>
-        {(q || filterDifficulty !== 'all' || filterCategory !== 'all') && (
-          <button
-            onClick={() => {
-              setQ('');
-              setFilterDifficulty('all');
-              setFilterCategory('all');
-            }}
-            className="text-cyan-400 hover:underline cursor-pointer"
-          >
-            Reset filters
-          </button>
-        )}
+      <div className="text-xs text-[#737F8C] font-mono">
+        Showing {results.length} of {commandCatalog.length} commands
       </div>
 
-      {/* Command Cards Grid */}
-      <div className="mt-4 grid gap-4">
+      {/* Compact Reference Table / List */}
+      <div className="rounded-lg border border-[#293542] divide-y divide-[#202934] bg-[#11161D] overflow-hidden">
         {results.length === 0 ? (
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/30 p-8 text-center text-sm text-slate-400">
-            No Git commands found matching &quot;{q}&quot;. Try searching for another term.
+          <div className="p-6 text-center text-xs text-[#737F8C] font-mono">
+            No commands match &quot;{q}&quot;.
           </div>
         ) : (
-          results.map((c) => (
-            <div
-              key={c.name}
-              className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 shadow-lg shadow-slate-950/20 transition hover:border-slate-700/80"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <code className="text-base font-bold text-cyan-300">{c.name}</code>
+          results.map((c) => {
+            const isExpanded = expandedCmd === c.name;
 
-                  {/* Difficulty Badge */}
-                  <span
-                    className={`rounded-md px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider ${
-                      c.difficulty === 'beginner'
-                        ? 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-400'
-                        : c.difficulty === 'intermediate'
-                        ? 'border border-cyan-500/30 bg-cyan-500/10 text-cyan-400'
-                        : 'border border-purple-500/30 bg-purple-500/10 text-purple-400'
-                    }`}
-                  >
-                    {c.difficulty}
-                  </span>
-
-                  {/* Category Badge */}
-                  <span className="rounded-md border border-slate-800 bg-slate-950/60 px-2 py-0.5 text-[11px] uppercase tracking-wider text-slate-400">
-                    {c.category}
-                  </span>
-
-                  {c.dangerous && (
-                    <span className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
-                      dangerous
+            return (
+              <div
+                key={c.name}
+                className="p-3 sm:p-4 hover:bg-[#171D25] transition"
+              >
+                <div
+                  onClick={() => setExpandedCmd(isExpanded ? null : c.name)}
+                  className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 cursor-pointer"
+                >
+                  <div className="flex items-baseline gap-2.5 flex-wrap">
+                    <code className="font-mono text-xs font-bold text-[#E6EDF3]">
+                      {c.name}
+                    </code>
+                    <span className="text-xs text-[#A7B0BC] leading-normal">
+                      {c.description}
                     </span>
-                  )}
+                  </div>
 
-                  {!c.implemented && (
-                    <span className="rounded-md border border-slate-800 bg-slate-950/80 px-2 py-0.5 text-[11px] text-slate-500">
-                      reference only
+                  <div className="flex items-center gap-2 text-[11px] font-mono text-[#737F8C] shrink-0 pt-1 sm:pt-0">
+                    <span className="capitalize">{c.category}</span>
+                    {c.dangerous && (
+                      <span className="text-[#FBBF24] font-semibold">dangerous</span>
+                    )}
+                    <span className="text-[#22D3EE] font-sans font-medium text-xs">
+                      {isExpanded ? 'Hide' : 'Details'}
                     </span>
-                  )}
+                  </div>
                 </div>
 
-                {c.version && (
-                  <span className="text-[11px] text-slate-600 font-mono">
-                    Git {c.version}
-                  </span>
+                {/* Expanded Syntax & Examples */}
+                {isExpanded && (
+                  <div className="mt-3 pt-3 border-t border-[#202934] space-y-2 text-xs">
+                    <div>
+                      <div className="font-mono text-[10px] text-[#737F8C] uppercase">
+                        Syntax
+                      </div>
+                      <code className="block mt-0.5 rounded border border-[#202934] bg-[#090D12] p-2 font-mono text-xs text-[#E6EDF3] overflow-x-auto whitespace-pre">
+                        {c.syntax}
+                      </code>
+                    </div>
+
+                    {c.examples && c.examples.length > 0 && (
+                      <div>
+                        <div className="font-mono text-[10px] text-[#737F8C] uppercase">
+                          Examples
+                        </div>
+                        <div className="mt-0.5 space-y-1">
+                          {c.examples.map((ex, i) => (
+                            <code
+                              key={i}
+                              className="block rounded border border-[#202934] bg-[#090D12] p-2 font-mono text-xs text-[#A7B0BC] overflow-x-auto whitespace-pre"
+                            >
+                              {ex}
+                            </code>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="pt-1 flex items-center justify-between text-xs text-[#737F8C]">
+                      <div>{c.difficulty && <span className="capitalize">Level: {c.difficulty}</span>}</div>
+                      <Link
+                        href="/terminal"
+                        className="text-[#22D3EE] hover:underline"
+                      >
+                        Try in sandbox →
+                      </Link>
+                    </div>
+                  </div>
                 )}
               </div>
-
-              {/* Description */}
-              <p className="mt-3 text-sm leading-6 text-slate-300">{c.description}</p>
-
-              {/* Syntax */}
-              <div className="mt-4 rounded-xl border border-slate-800/80 bg-slate-950/60 p-3">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                  Syntax
-                </div>
-                <code className="mt-1 block overflow-x-auto text-xs font-medium text-slate-200">
-                  {c.syntax}
-                </code>
-              </div>
-
-              {/* Examples */}
-              {c.examples && c.examples.length > 0 && (
-                <div className="mt-3 rounded-xl border border-slate-800/60 bg-slate-950/40 p-3">
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-cyan-400/80">
-                    Examples
-                  </div>
-                  <div className="mt-1 space-y-1">
-                    {c.examples.map((ex, i) => (
-                      <code
-                        key={i}
-                        className="block text-xs font-mono text-slate-300 bg-slate-900/60 px-2.5 py-1 rounded-lg border border-slate-800/40"
-                      >
-                        {ex}
-                      </code>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Action Links */}
-              <div className="mt-4 flex items-center justify-between border-t border-slate-800/60 pt-3 text-xs">
-                <Link
-                  href={`/learn/${c.difficulty}`}
-                  className="inline-flex items-center gap-1 font-semibold text-cyan-400 hover:text-cyan-300 transition"
-                >
-                  <span>Learn in {c.difficulty}</span>
-                  <span>→</span>
-                </Link>
-                <Link
-                  href="/terminal"
-                  className="inline-flex items-center gap-1 font-medium text-slate-400 hover:text-slate-200 transition"
-                >
-                  <span>Sandbox Terminal</span>
-                  <span>↗</span>
-                </Link>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
     </div>

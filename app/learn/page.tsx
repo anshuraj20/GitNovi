@@ -7,42 +7,22 @@ export default async function Learn() {
   const moduleOrder = ['pre-git', 'beginner', 'intermediate', 'advanced'] as const;
 
   return (
-    <div className="max-w-6xl mx-auto px-5 py-12">
-      <Link
-        href="/dashboard"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
-      >
-        <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-          />
-        </svg>
-        <span>Back to Dashboard</span>
-      </Link>
-
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-8">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <div className="text-xs uppercase tracking-[0.2em] font-mono text-cyan-400">
-          Curriculum & Roadmap
+      <div className="space-y-2">
+        <div className="text-xs font-mono text-[#737F8C]">
+          Curriculum
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#E6EDF3] tracking-tight">
           Git Learning Roadmap
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base max-w-2xl mt-1">
-          Master Git from terminal prerequisites to plumbing internals through structured, pedagogical lessons with real-world practice.
+        <p className="text-sm text-[#A7B0BC] max-w-xl">
+          72 structured lessons across 4 sequential tracks. Work through each concept, try the commands in the sandbox, and verify your understanding.
         </p>
       </div>
 
-      {/* Module Grid */}
-      <div className="grid md:grid-cols-2 gap-5 mt-10">
+      {/* Module List */}
+      <div className="space-y-3">
         {moduleOrder.map((slug) => {
           const mod = courseCatalog[slug];
           if (!mod) return null;
@@ -54,43 +34,30 @@ export default async function Learn() {
             <Link
               href={`/learn/${slug}`}
               key={slug}
-              className="group relative rounded-2xl border border-slate-800 bg-slate-900/40 p-6 shadow-lg shadow-slate-950/20 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-500/50 hover:bg-slate-900/70"
+              className="block rounded border border-[#293542] bg-[#11161D] p-4 sm:p-5 hover:border-[#22D3EE]/50 hover:bg-[#171D25] transition"
             >
-              <div className="flex items-center justify-between">
-                <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2.5 py-1 text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
-                  Level {mod.level}
-                </span>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#737F8C]">
+                    <span className="text-[#22D3EE] font-semibold">Level {mod.level}</span>
+                    <span>·</span>
+                    <span>{mod.lessons.length} lessons</span>
+                    <span>·</span>
+                    <span>~{hours} hrs</span>
+                  </div>
 
-                <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
-                  <span>{mod.lessons.length} lessons</span>
-                  <span>•</span>
-                  <span>~{hours} hrs</span>
+                  <h2 className="text-base sm:text-lg font-bold text-[#E6EDF3] mt-1">
+                    {mod.title}
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-[#A7B0BC] mt-1 leading-relaxed max-w-2xl">
+                    {mod.description}
+                  </p>
                 </div>
-              </div>
 
-              <h2 className="text-2xl font-bold text-slate-100 mt-4 group-hover:text-cyan-300 transition">
-                {mod.title}
-              </h2>
-
-              <p className="text-slate-400 text-sm leading-relaxed mt-2 line-clamp-2">
-                {mod.description}
-              </p>
-
-              <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-cyan-400 group-hover:text-cyan-300">
-                <span>Start module</span>
-                <svg
-                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
+                <div className="shrink-0 text-xs font-semibold text-[#22D3EE] sm:self-center">
+                  Start Track →
+                </div>
               </div>
             </Link>
           );

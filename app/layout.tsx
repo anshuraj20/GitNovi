@@ -5,7 +5,7 @@ import { Footer } from '@/components/ui/Footer';
 import { AIAssistantDrawer } from '@/components/ai/AIAssistantDrawer';
 
 export const viewport: Viewport = {
-  themeColor: '#070b14',
+  themeColor: '#0B0F14',
   width: 'device-width',
   initialScale: 1,
 };

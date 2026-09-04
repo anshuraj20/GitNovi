@@ -17,10 +17,10 @@ export default async function AchievementsPage() {
       {/* Back Button */}
       <Link
         href="/dashboard"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-[#A7B0BC] hover:text-[#22D3EE] transition mb-6 group"
       >
         <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
+          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#22D3EE]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -36,13 +36,13 @@ export default async function AchievementsPage() {
       </Link>
 
       <div className="flex flex-col gap-2">
-        <div className="text-xs font-bold uppercase tracking-[0.2em] font-mono text-cyan-400">
+        <div className="text-xs font-bold uppercase tracking-[0.2em] font-mono text-[#22D3EE]">
           GitNovi / Achievements
         </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#E6EDF3] tracking-tight">
           Your Earned Milestones
         </h1>
-        <p className="mt-1 text-slate-400 text-sm sm:text-base max-w-2xl">
+        <p className="mt-1 text-[#A7B0BC] text-sm sm:text-base max-w-2xl">
           Unlock achievements as you learn concepts, master Git commands in the terminal, and complete hands-on challenges.
         </p>
       </div>

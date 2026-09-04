@@ -126,10 +126,10 @@ export default function ResetPasswordPage() {
       {/* Back Link */}
       <Link
         href="/auth/login"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-[#A7B0BC] hover:text-[#22D3EE] transition mb-6 group"
       >
         <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
+          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#22D3EE]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -144,19 +144,19 @@ export default function ResetPasswordPage() {
         <span>Back to Login</span>
       </Link>
 
-      <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-7 sm:p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+      <div className="rounded-lg border border-[#293542] bg-[#11161D] p-7 sm:p-8">
         {/* Header */}
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] font-mono text-cyan-400">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] font-mono text-[#22D3EE]">
           <span>GitNovi</span>
           <span>•</span>
           <span>Security</span>
         </div>
 
-        <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+        <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold text-[#E6EDF3] tracking-tight">
           {recoveryMode ? 'Set New Password' : 'Reset Your Password'}
         </h1>
 
-        <p className="mt-1.5 text-xs sm:text-sm text-slate-400 leading-relaxed">
+        <p className="mt-1.5 text-xs sm:text-sm text-[#A7B0BC] leading-relaxed">
           {recoveryMode
             ? 'Enter your new account password below to regain full access to your workspace.'
             : 'Enter the email associated with your GitNovi account and we will send you a secure recovery link.'}
@@ -166,7 +166,7 @@ export default function ResetPasswordPage() {
         {!recoveryMode ? (
           <form onSubmit={handleSendResetEmail} className="mt-6 space-y-4">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-mono mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#E6EDF3] font-mono mb-1.5">
                 Account Email Address
               </label>
               <div className="relative">
@@ -177,10 +177,10 @@ export default function ResetPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="developer@example.com"
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3 pl-10 text-sm text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
+                  className="w-full rounded-md border border-[#293542] bg-[#090D12] px-4 py-2.5 pl-10 text-xs sm:text-sm text-[#E6EDF3] placeholder-[#737F8C] outline-none transition focus:border-[#22D3EE]/60"
                 />
                 <svg
-                  className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-500"
+                  className="absolute left-3.5 top-3 h-4 w-4 text-[#737F8C]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -198,11 +198,11 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || !email}
-              className="w-full rounded-xl bg-cyan-500 py-3 text-xs sm:text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 active:scale-[0.99] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+              className="w-full rounded-md bg-[#22D3EE] py-2.5 text-xs sm:text-sm font-semibold text-[#090D12] hover:bg-[#67E8F9] active:scale-[0.99] disabled:opacity-50 transition cursor-pointer flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950 border-t-transparent" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#090D12] border-t-transparent" />
                   <span>Sending Recovery Link...</span>
                 </>
               ) : emailSent ? (
@@ -217,13 +217,13 @@ export default function ResetPasswordPage() {
           <form onSubmit={handleUpdatePassword} className="mt-6 space-y-4">
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#E6EDF3] font-mono">
                   New Password
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="text-[11px] text-cyan-400 hover:text-cyan-300 font-mono"
+                  className="text-[11px] text-[#22D3EE] hover:text-[#67E8F9] font-mono cursor-pointer"
                 >
                   {showPassword ? 'Hide' : 'Show'}
                 </button>
@@ -236,12 +236,12 @@ export default function ResetPasswordPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
+                className="w-full rounded-md border border-[#293542] bg-[#090D12] px-4 py-2.5 text-xs sm:text-sm text-[#E6EDF3] placeholder-[#737F8C] outline-none transition focus:border-[#22D3EE]/60"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-mono mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#E6EDF3] font-mono mb-1.5">
                 Confirm New Password
               </label>
               <input
@@ -252,33 +252,33 @@ export default function ResetPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
+                className="w-full rounded-md border border-[#293542] bg-[#090D12] px-4 py-2.5 text-xs sm:text-sm text-[#E6EDF3] placeholder-[#737F8C] outline-none transition focus:border-[#22D3EE]/60"
               />
             </div>
 
             {/* Password Validation Checklist */}
-            <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-3 space-y-1.5 text-xs font-mono">
+            <div className="rounded border border-[#293542] bg-[#090D12] p-3 space-y-1.5 text-xs font-mono">
               <div className="flex items-center gap-2">
-                <span className={hasMinLength ? 'text-emerald-400' : 'text-slate-500'}>
+                <span className={hasMinLength ? 'text-[#34D399]' : 'text-[#737F8C]'}>
                   {hasMinLength ? '✓' : '○'}
                 </span>
-                <span className={hasMinLength ? 'text-slate-200' : 'text-slate-400'}>
+                <span className={hasMinLength ? 'text-[#E6EDF3]' : 'text-[#737F8C]'}>
                   At least 8 characters
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={hasNumber ? 'text-emerald-400' : 'text-slate-500'}>
+                <span className={hasNumber ? 'text-[#34D399]' : 'text-[#737F8C]'}>
                   {hasNumber ? '✓' : '○'}
                 </span>
-                <span className={hasNumber ? 'text-slate-200' : 'text-slate-400'}>
+                <span className={hasNumber ? 'text-[#E6EDF3]' : 'text-[#737F8C]'}>
                   Contains at least one number
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className={passwordsMatch ? 'text-emerald-400' : 'text-slate-500'}>
+                <span className={passwordsMatch ? 'text-[#34D399]' : 'text-[#737F8C]'}>
                   {passwordsMatch ? '✓' : '○'}
                 </span>
-                <span className={passwordsMatch ? 'text-slate-200' : 'text-slate-400'}>
+                <span className={passwordsMatch ? 'text-[#E6EDF3]' : 'text-[#737F8C]'}>
                   Passwords match
                 </span>
               </div>
@@ -287,11 +287,11 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={loading || !hasMinLength || !passwordsMatch}
-              className="w-full rounded-xl bg-cyan-500 py-3 text-xs sm:text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 active:scale-[0.99] disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+              className="w-full rounded-md bg-[#22D3EE] py-2.5 text-xs sm:text-sm font-semibold text-[#090D12] hover:bg-[#67E8F9] active:scale-[0.99] disabled:opacity-50 transition cursor-pointer flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950 border-t-transparent" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#090D12] border-t-transparent" />
                   <span>Updating Password...</span>
                 </>
               ) : (
@@ -304,10 +304,10 @@ export default function ResetPasswordPage() {
         {/* Status Message Alert */}
         {status && (
           <div
-            className={`mt-4 rounded-xl p-3.5 text-xs leading-relaxed ${
+            className={`mt-4 rounded p-3 text-xs leading-relaxed font-mono ${
               status.type === 'error'
-                ? 'border border-rose-500/30 bg-rose-500/10 text-rose-300'
-                : 'border border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                ? 'border border-[#F87171]/40 bg-[#090D12] text-[#F87171]'
+                : 'border border-[#34D399]/40 bg-[#090D12] text-[#34D399]'
             }`}
           >
             {status.text}
@@ -315,12 +315,12 @@ export default function ResetPasswordPage() {
         )}
 
         {/* Bottom Helper Links */}
-        <div className="mt-6 flex items-center justify-between border-t border-slate-800/80 pt-4 text-xs">
-          <Link href="/auth/login" className="text-slate-400 hover:text-cyan-300 transition">
-            Remember your password? <span className="text-cyan-400 font-semibold">Log in</span>
+        <div className="mt-6 flex items-center justify-between border-t border-[#202934] pt-4 text-xs">
+          <Link href="/auth/login" className="text-[#737F8C] hover:text-[#22D3EE] transition">
+            Remember your password? <span className="text-[#22D3EE] font-semibold">Log in</span>
           </Link>
-          <Link href="/auth/signup" className="text-slate-400 hover:text-cyan-300 transition">
-            New here? <span className="text-cyan-400 font-semibold">Sign up</span>
+          <Link href="/auth/signup" className="text-[#737F8C] hover:text-[#22D3EE] transition">
+            New here? <span className="text-[#22D3EE] font-semibold">Sign up</span>
           </Link>
         </div>
       </div>

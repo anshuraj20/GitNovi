@@ -28,11 +28,50 @@ export default async function Dashboard() {
   const completedLessonIds = (lessonsProgress ?? []).map((l) => l.lesson_id);
   const completedChallengeIds = (challengeProgress ?? []).map((c) => c.challenge_id);
 
+  const meta = user.user_metadata || {};
+  const metaName =
+    meta.full_name ||
+    meta.name ||
+    meta.display_name ||
+    (meta.given_name ? `${meta.given_name} ${meta.family_name || ''}`.trim() : null) ||
+    meta.user_name;
+
+  const finalProfile = profileData
+    ? {
+        ...profileData,
+        display_name:
+          (!profileData.display_name || profileData.display_name === user.email?.split('@')[0]) && metaName
+            ? metaName
+            : profileData.display_name,
+      }
+    : metaName
+    ? {
+        display_name: metaName,
+        email: user.email ?? '',
+        current_level: 'pre-git',
+      }
+    : null;
+
+  if ((!profileData?.display_name || profileData.display_name === user.email?.split('@')[0]) && metaName) {
+    supabase
+      .from('profiles')
+      .upsert(
+        {
+          id: user.id,
+          email: user.email,
+          display_name: metaName,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'id' }
+      )
+      .then(() => null);
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
       <DashboardLiveView
         userId={user.id}
-        initialProfile={profileData}
+        initialProfile={finalProfile}
         initialStreak={streakData}
         initialCompletedLessonIds={completedLessonIds}
         initialCompletedChallengeIds={completedChallengeIds}

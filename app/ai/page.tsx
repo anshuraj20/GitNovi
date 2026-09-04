@@ -10,10 +10,10 @@ export default async function AIPage() {
       <div className="mb-3 flex items-center justify-between gap-3">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition group"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#A7B0BC] hover:text-[#22D3EE] transition group"
         >
           <svg
-            className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
+            className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#22D3EE]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -28,8 +28,8 @@ export default async function AIPage() {
           <span>Back to Dashboard</span>
         </Link>
 
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="flex items-center gap-2 text-xs font-medium text-[#737F8C]">
+          <span className="h-2 w-2 rounded-full bg-[#34D399]" />
           <span>Interactive Assistant</span>
         </div>
       </div>

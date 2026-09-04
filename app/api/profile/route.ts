@@ -29,13 +29,30 @@ export async function PATCH(request: Request) {
 
     const { error } = await supabase
       .from('profiles')
-      .update({
-        display_name: body.displayName,
-      })
-      .eq('id', user.id);
+      .upsert(
+        {
+          id: user.id,
+          email: user.email,
+          display_name: body.displayName,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'id' }
+      );
 
     if (error) {
       console.warn('Profile update warning:', error.message);
+    }
+
+    try {
+      await supabase.auth.updateUser({
+        data: {
+          display_name: body.displayName,
+          full_name: body.displayName,
+          name: body.displayName,
+        },
+      });
+    } catch {
+      // Optional metadata sync
     }
 
     return NextResponse.json({ ok: true });

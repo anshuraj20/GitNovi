@@ -27,7 +27,7 @@ function LoginForm() {
     if (error) {
       if (error.message.toLowerCase().includes('rate limit')) {
         setMsg({
-          text: 'Email rate limit reached. You can instantly sign in using Google or GitHub below.',
+          text: 'Email rate limit reached. You can sign in using Google or GitHub above.',
           type: 'rate_limit',
         });
       } else {
@@ -42,83 +42,54 @@ function LoginForm() {
   };
 
   return (
-    <div className="mx-auto max-w-md px-5 py-16 sm:py-24">
-      {/* Back Link */}
-      <Link
-        href="/"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
-      >
-        <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-          />
-        </svg>
-        <span>Back to Home</span>
-      </Link>
-
-      <div className="rounded-3xl border border-slate-800 bg-slate-900/60 p-7 sm:p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+    <div className="mx-auto max-w-sm px-4 py-12 sm:py-16">
+      <div className="rounded border border-[#293542] bg-[#11161D] p-5 sm:p-6 space-y-4">
         {/* Header */}
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] font-mono text-cyan-400">
-          <span>GitNovi</span>
-          <span>•</span>
-          <span>Account</span>
+        <div>
+          <h1 className="text-lg sm:text-xl font-bold text-[#E6EDF3]">
+            Sign in to GitNovi
+          </h1>
+          <p className="text-xs text-[#A7B0BC] mt-0.5">
+            Access your courses, virtual sandbox, and scenario labs.
+          </p>
         </div>
-
-        <h1 className="mt-2 text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Welcome Back
-        </h1>
-
-        <p className="mt-1.5 text-xs sm:text-sm text-slate-400 leading-relaxed">
-          Sign in to access your course modules, interactive terminal, challenges, and AI tutor.
-        </p>
 
         {/* OAuth Buttons */}
-        <div className="mt-6">
-          <OAuthButtons onError={(err) => setMsg({ text: err, type: 'error' })} />
-        </div>
+        <OAuthButtons onError={(err) => setMsg({ text: err, type: 'error' })} />
 
         {/* Divider */}
-        <div className="relative my-6 text-center text-xs">
+        <div className="relative my-3 text-center text-xs">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-800" />
+            <div className="w-full border-t border-[#293542]" />
           </div>
-          <span className="relative bg-slate-900/90 px-3 font-mono uppercase text-slate-500 text-[10px] tracking-wider">
-            Or with email & password
+          <span className="relative bg-[#11161D] px-2 font-mono text-[#737F8C] text-[10px]">
+            or with email
           </span>
         </div>
 
-        <form onSubmit={submit} className="space-y-4">
+        <form onSubmit={submit} className="space-y-3">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-mono mb-1.5">
-              Email Address
+            <label className="block text-xs font-medium text-[#E6EDF3] mb-1">
+              Email
             </label>
             <input
               required
               type="email"
-              autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="developer@example.com"
-              className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
+              placeholder="name@example.com"
+              className="w-full rounded border border-[#293542] bg-[#090D12] px-3 py-1.5 text-xs text-[#E6EDF3] placeholder-[#737F8C] outline-none focus:border-[#22D3EE]/60 transition"
             />
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-medium text-[#E6EDF3]">
                 Password
               </label>
               <Link
                 href="/auth/reset-password"
-                className="text-[11px] text-cyan-400 hover:text-cyan-300 font-mono"
+                className="text-[11px] text-[#22D3EE] hover:text-[#67E8F9] hover:underline transition"
               >
                 Forgot?
               </Link>
@@ -126,50 +97,40 @@ function LoginForm() {
             <input
               required
               type="password"
-              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••••••"
-              className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-3 text-sm text-white placeholder-slate-500 shadow-inner outline-none transition focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/40"
+              placeholder="••••••••"
+              className="w-full rounded border border-[#293542] bg-[#090D12] px-3 py-1.5 text-xs text-[#E6EDF3] placeholder-[#737F8C] outline-none focus:border-[#22D3EE]/60 transition"
             />
           </div>
+
+          {msg && (
+            <div
+              className={`rounded border p-2 text-xs font-mono ${
+                msg.type === 'error'
+                  ? 'border-[#F87171]/40 bg-[#090D12] text-[#F87171]'
+                  : 'border-[#FBBF24]/40 bg-[#090D12] text-[#FBBF24]'
+              }`}
+            >
+              {msg.text}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-cyan-500 py-3 text-xs sm:text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400 active:scale-[0.99] disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
+            className="w-full rounded bg-[#22D3EE] py-2 text-xs font-semibold text-[#090D12] hover:bg-[#67E8F9] disabled:opacity-50 transition cursor-pointer"
           >
-            {loading ? (
-              <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-950 border-t-transparent" />
-                <span>Signing In...</span>
-              </>
-            ) : (
-              'Sign In with Email'
-            )}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        {/* Error / Rate Limit Alert */}
-        {msg && (
-          <div
-            className={`mt-4 rounded-xl p-3.5 text-xs leading-relaxed ${
-              msg.type === 'rate_limit'
-                ? 'border border-amber-500/30 bg-amber-500/10 text-amber-300'
-                : 'border border-rose-500/30 bg-rose-500/10 text-rose-300'
-            }`}
-          >
-            {msg.text}
-          </div>
-        )}
-
-        {/* Switch to Signup */}
-        <div className="mt-6 border-t border-slate-800/80 pt-4 text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-[#737F8C]">
           Don&apos;t have an account?{' '}
-          <Link href="/auth/signup" className="text-cyan-400 font-bold hover:text-cyan-300">
+          <Link href="/auth/signup" className="text-[#22D3EE] hover:text-[#67E8F9] hover:underline font-medium transition">
             Sign up
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );
@@ -177,7 +138,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-xs text-slate-500">Loading...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-xs text-[#737F8C] font-mono">Loading...</div>}>
       <LoginForm />
     </Suspense>
   );

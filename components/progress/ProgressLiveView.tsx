@@ -34,7 +34,6 @@ export function ProgressLiveView({
     longest_streak: initialStreak?.longest_streak ?? 1,
   }));
 
-  // Sync client-side localStorage and isolate user
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (userId) {
@@ -68,13 +67,9 @@ export function ProgressLiveView({
   const completedLessonCount = completedLessonSet.size;
   const completedChallengeCount = completedChallengeSet.size;
   const overallPercent = totalLessons > 0 ? Math.round((completedLessonCount / totalLessons) * 100) : 0;
-  const challengePercent = totalChallenges > 0 ? Math.round((completedChallengeCount / totalChallenges) * 100) : 0;
 
   const currentStreak = streakData.current_streak;
   const longestStreak = streakData.longest_streak;
-
-  const commandsCount = (serverActivity ?? []).reduce((acc, row) => acc + (row.commands ?? 0), 0);
-  const minutesCount = (serverActivity ?? []).reduce((acc, row) => acc + (row.minutes ?? 0), 0);
 
   const modules = [
     { slug: 'pre-git', name: 'Pre-Git Foundations', data: courseCatalog['pre-git'] },
@@ -84,57 +79,48 @@ export function ProgressLiveView({
   ];
 
   return (
-    <div className="mt-8 space-y-8">
+    <div className="space-y-6">
       {/* Top Global Metric Card */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 shadow-xl shadow-slate-950/20">
+      <div className="rounded-lg border border-[#293542] bg-[#11161D] p-4 sm:p-5 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Total Course Completion
-            </span>
-            <div className="text-xl font-bold text-white mt-0.5">Full Curriculum Progress</div>
-          </div>
-          <span className="text-3xl font-extrabold text-cyan-400 font-mono">{overallPercent}%</span>
-        </div>
-
-        <div className="mt-4">
-          <ProgressBar value={overallPercent} />
-        </div>
-
-        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-800/80 pt-5 sm:grid-cols-4">
-          <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
-            <div className="text-xs text-slate-500">Lessons Completed</div>
-            <div className="mt-1 text-2xl font-black text-slate-100 font-mono">
-              {completedLessonCount} <span className="text-xs text-slate-500 font-normal">/ {totalLessons}</span>
+            <div className="text-xs font-mono text-[#737F8C]">Curriculum Overview</div>
+            <div className="text-base sm:text-lg font-bold text-[#E6EDF3] mt-0.5">
+              {completedLessonCount} of {totalLessons} lessons completed
             </div>
           </div>
+          <span className="text-xl font-bold text-[#22D3EE] font-mono">{overallPercent}%</span>
+        </div>
 
-          <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
-            <div className="text-xs text-slate-500">Challenges Verified</div>
-            <div className="mt-1 text-2xl font-black text-slate-100 font-mono">
-              {completedChallengeCount} <span className="text-xs text-slate-500 font-normal">/ {totalChallenges}</span>
-            </div>
+        <ProgressBar value={overallPercent} />
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-[#202934] pt-3 text-xs">
+          <div>
+            <div className="text-[#737F8C]">Lessons Completed</div>
+            <div className="font-mono font-semibold text-[#E6EDF3] mt-0.5">{completedLessonCount} / {totalLessons}</div>
           </div>
-
-          <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
-            <div className="text-xs text-slate-500">Commands Run</div>
-            <div className="mt-1 text-2xl font-black text-cyan-300 font-mono">{commandsCount}</div>
+          <div>
+            <div className="text-[#737F8C]">Challenges Passed</div>
+            <div className="font-mono font-semibold text-[#E6EDF3] mt-0.5">{completedChallengeCount} / {totalChallenges}</div>
           </div>
-
-          <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4">
-            <div className="text-xs text-slate-500">Active Streak</div>
-            <div className="mt-1 text-2xl font-black text-amber-400 font-mono">🔥 {currentStreak} days</div>
+          <div>
+            <div className="text-[#737F8C]">Current Streak</div>
+            <div className="font-mono font-semibold text-[#E6EDF3] mt-0.5">{currentStreak} days</div>
+          </div>
+          <div>
+            <div className="text-[#737F8C]">Best Streak</div>
+            <div className="font-mono font-semibold text-[#E6EDF3] mt-0.5">{longestStreak} days</div>
           </div>
         </div>
       </div>
 
-      {/* Module-by-Module Progress Breakdown */}
-      <div>
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono mb-4">
-          Curriculum Tier Breakdown
-        </h2>
+      {/* Track by Track Breakdown */}
+      <div className="space-y-3">
+        <div className="text-xs font-semibold text-[#737F8C] uppercase tracking-wider font-mono">
+          Track Completion
+        </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid sm:grid-cols-2 gap-3">
           {modules.map(({ slug, name, data }) => {
             const modLessons = data?.lessons ?? [];
             const modDone = modLessons.filter((l) => completedLessonSet.has(l.id)).length;
@@ -144,107 +130,32 @@ export function ProgressLiveView({
             return (
               <div
                 key={slug}
-                className="rounded-2xl border border-slate-800 bg-slate-900/40 p-5 shadow-lg shadow-slate-950/20"
+                className="rounded-lg border border-[#293542] bg-[#11161D] p-4 flex flex-col justify-between"
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-400">
-                      Level {data?.level ?? 0}
-                    </span>
-                    <h3 className="text-base font-bold text-slate-100 mt-0.5">{name}</h3>
+                <div>
+                  <div className="flex items-center justify-between text-xs font-mono text-[#737F8C]">
+                    <span>Level {data?.level ?? 0}</span>
+                    <span>{modPercent}%</span>
                   </div>
 
-                  <div className="text-right">
-                    <span className="text-sm font-bold text-cyan-300 font-mono">{modPercent}%</span>
-                    <div className="text-xs text-slate-500 font-mono">{modDone} / {modTotal} lessons</div>
+                  <h3 className="text-sm font-semibold text-[#E6EDF3] mt-1">
+                    {name}
+                  </h3>
+
+                  <div className="mt-2.5">
+                    <ProgressBar value={modPercent} />
                   </div>
                 </div>
 
-                <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-                  <div
-                    className="h-full bg-cyan-400 transition-all duration-300"
-                    style={{ width: `${modPercent}%` }}
-                  />
-                </div>
-
-                <div className="mt-4 flex items-center justify-between text-xs">
-                  <Link
-                    href={`/learn/${slug}`}
-                    className="font-semibold text-cyan-400 hover:text-cyan-300 transition"
-                  >
-                    View lessons →
+                <div className="mt-3 flex items-center justify-between border-t border-[#202934] pt-2 text-xs text-[#737F8C] font-mono">
+                  <span>{modDone} / {modTotal} lessons</span>
+                  <Link href={`/learn/${slug}`} className="text-[#22D3EE] hover:underline font-sans">
+                    Review →
                   </Link>
-                  <span className="text-slate-500 font-mono">
-                    {modPercent === 100 ? '✓ Complete' : `${modTotal - modDone} remaining`}
-                  </span>
                 </div>
               </div>
             );
           })}
-        </div>
-      </div>
-
-      {/* Challenges & Momentum Row */}
-      <div className="grid gap-5 md:grid-cols-2">
-        {/* Challenges Lab Progress */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 shadow-lg shadow-slate-950/20">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-white">Hands-on Challenges Lab</h3>
-            <span className="text-base font-bold text-cyan-300 font-mono">{challengePercent}%</span>
-          </div>
-
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-800">
-            <div
-              className="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 transition-all duration-300"
-              style={{ width: `${challengePercent}%` }}
-            />
-          </div>
-
-          <p className="mt-3 text-xs leading-relaxed text-slate-400">
-            Practice real terminal operations in the sandbox and verify your repository state.
-          </p>
-
-          <div className="mt-5 flex items-center justify-between border-t border-slate-800/80 pt-4 text-xs">
-            <span className="font-mono text-slate-300">{completedChallengeCount} of {totalChallenges} passed</span>
-            <Link
-              href="/challenges"
-              className="font-bold text-cyan-400 hover:text-cyan-300 transition"
-            >
-              Open Challenges →
-            </Link>
-          </div>
-        </div>
-
-        {/* Activity & Streaks History */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 shadow-lg shadow-slate-950/20">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-white">Activity Momentum</h3>
-            <span className="text-xs font-mono text-slate-500">{longestStreak} day record</span>
-          </div>
-
-          <div className="mt-4 space-y-2.5">
-            {(serverActivity ?? []).length === 0 ? (
-              <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4 text-center text-xs text-slate-400">
-                No activity logged yet. Practice in the terminal or complete a lesson to track activity.
-              </div>
-            ) : (
-              (serverActivity ?? []).slice(0, 5).map((row) => (
-                <div
-                  key={row.activity_date}
-                  className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-950/50 px-3.5 py-2 text-xs"
-                >
-                  <span className="font-medium text-slate-200">{String(row.activity_date)}</span>
-                  <div className="flex items-center gap-3 text-slate-400 font-mono text-[11px]">
-                    <span>{row.lessons ?? 0} lessons</span>
-                    <span>•</span>
-                    <span>{row.commands ?? 0} commands</span>
-                    <span>•</span>
-                    <span>{row.challenges ?? 0} challenges</span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
         </div>
       </div>
     </div>

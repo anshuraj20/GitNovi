@@ -65,13 +65,13 @@ export function LessonCompleteButton({
         disabled={loading}
         title="Click to mark as incomplete"
         aria-label="Lesson completed. Click to mark as incomplete."
-        className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/10 hover:bg-emerald-500/20 hover:border-emerald-400 text-xs font-semibold text-emerald-400 shadow-sm transition active:scale-[0.98] cursor-pointer"
+        className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[#34D399]/40 bg-[#34D399]/10 hover:bg-[#34D399]/20 hover:border-[#34D399] text-xs font-medium text-[#34D399] transition cursor-pointer"
       >
         {loading ? (
-          <span className="w-3 h-3 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+          <span className="w-3 h-3 rounded-full border-2 border-[#34D399] border-t-transparent animate-spin" />
         ) : (
           <svg
-            className="w-3.5 h-3.5 text-emerald-400 transition-transform group-hover:scale-110"
+            className="w-3.5 h-3.5 text-[#34D399]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -93,11 +93,11 @@ export function LessonCompleteButton({
     <button
       onClick={toggle}
       disabled={loading}
-      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-cyan-500/40 bg-slate-900/60 hover:bg-cyan-500/10 hover:border-cyan-400 text-xs font-medium text-cyan-300 shadow-sm transition active:scale-[0.98] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-[#293542] bg-[#11161D] hover:bg-[#171D25] hover:border-[#22D3EE]/50 text-xs font-medium text-[#E6EDF3] hover:text-[#22D3EE] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
     >
       {loading ? (
         <>
-          <span className="w-3 h-3 rounded-full border-2 border-cyan-300 border-t-transparent animate-spin" />
+          <span className="w-3 h-3 rounded-full border-2 border-[#22D3EE] border-t-transparent animate-spin" />
           Saving...
         </>
       ) : (

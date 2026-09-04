@@ -41,18 +41,18 @@ export function OAuthButtons({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       {/* Google Button */}
       <button
         type="button"
         disabled={loadingProvider !== null}
         onClick={() => handleOAuthSignIn('google')}
-        className="w-full flex items-center justify-center gap-3 rounded-xl border border-slate-800 bg-slate-950/80 hover:bg-slate-900 hover:border-slate-700 px-4 py-3 text-xs sm:text-sm font-semibold text-slate-200 transition active:scale-[0.99] disabled:opacity-60 cursor-pointer shadow-sm"
+        className="w-full flex items-center justify-center gap-2.5 rounded-md border border-[#293542] bg-[#11161D] hover:bg-[#171D25] hover:border-[#354352] px-3.5 py-2.5 text-xs font-medium text-[#E6EDF3] transition active:scale-[0.99] disabled:opacity-60 cursor-pointer"
       >
         {loadingProvider === 'google' ? (
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#22D3EE] border-t-transparent" />
         ) : (
-          <svg className="h-4 w-4" viewBox="0 0 24 24">
+          <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
               d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"
@@ -79,12 +79,12 @@ export function OAuthButtons({
         type="button"
         disabled={loadingProvider !== null}
         onClick={() => handleOAuthSignIn('github')}
-        className="w-full flex items-center justify-center gap-3 rounded-xl border border-slate-800 bg-slate-950/80 hover:bg-slate-900 hover:border-slate-700 px-4 py-3 text-xs sm:text-sm font-semibold text-slate-200 transition active:scale-[0.99] disabled:opacity-60 cursor-pointer shadow-sm"
+        className="w-full flex items-center justify-center gap-2.5 rounded-md border border-[#293542] bg-[#11161D] hover:bg-[#171D25] hover:border-[#354352] px-3.5 py-2.5 text-xs font-medium text-[#E6EDF3] transition active:scale-[0.99] disabled:opacity-60 cursor-pointer"
       >
         {loadingProvider === 'github' ? (
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#22D3EE] border-t-transparent" />
         ) : (
-          <svg className="h-4 w-4 fill-white" viewBox="0 0 24 24">
+          <svg className="h-4 w-4 shrink-0 fill-[#E6EDF3]" viewBox="0 0 24 24">
             <path
               fillRule="evenodd"
               clipRule="evenodd"

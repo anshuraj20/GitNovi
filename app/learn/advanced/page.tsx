@@ -12,10 +12,10 @@ export default async function AdvancedPage() {
     <div className="max-w-6xl mx-auto px-5 py-12">
       <Link
         href="/learn"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition mb-6 group"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-[#A7B0BC] hover:text-[#22D3EE] transition mb-6 group"
       >
         <svg
-          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-cyan-400"
+          className="w-4 h-4 transition-transform group-hover:-translate-x-1 text-[#22D3EE]"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -30,11 +30,11 @@ export default async function AdvancedPage() {
         <span>Back to Learning Roadmap</span>
       </Link>
 
-      <div className="text-cyan-400 text-xs font-mono font-bold tracking-wider uppercase">GITNOVI / ADVANCED</div>
-      <h1 className="text-3xl sm:text-4xl font-extrabold mt-2 text-white">
+      <div className="text-[#22D3EE] text-xs font-mono font-bold tracking-wider uppercase">GITNOVI / ADVANCED</div>
+      <h1 className="text-3xl sm:text-4xl font-extrabold mt-2 text-[#E6EDF3]">
         {courseModule?.title ?? 'Advanced Git Internals & Plumbing'}
       </h1>
-      <p className="text-slate-400 mt-2 text-sm sm:text-base max-w-2xl">
+      <p className="text-[#A7B0BC] mt-2 text-sm sm:text-base max-w-2xl">
         {courseModule?.description ?? 'Object database, low-level plumbing commands, worktrees, sparse checkout, and repository maintenance.'}
       </p>
 
