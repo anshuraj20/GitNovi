@@ -151,7 +151,7 @@ function SignupForm() {
 
         <p className="text-center text-xs text-[#737F8C]">
           Already registered?{' '}
-          <Link href="/auth/login" className="text-[#22D3EE] hover:text-[#67E8F9] hover:underline font-medium transition">
+          <Link href="/auth/login" className="text-[#22D3EE] hover:text-[#67E8F9] hover:underline font-medium transition whitespace-nowrap">
             Sign in
           </Link>
         </p>

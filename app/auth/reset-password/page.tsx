@@ -315,12 +315,12 @@ export default function ResetPasswordPage() {
         )}
 
         {/* Bottom Helper Links */}
-        <div className="mt-6 flex items-center justify-between border-t border-[#202934] pt-4 text-xs">
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#202934] pt-4 text-xs text-center sm:text-left">
           <Link href="/auth/login" className="text-[#737F8C] hover:text-[#22D3EE] transition">
-            Remember your password? <span className="text-[#22D3EE] font-semibold">Log in</span>
+            Remember your password? <span className="text-[#22D3EE] font-semibold whitespace-nowrap">Log in</span>
           </Link>
           <Link href="/auth/signup" className="text-[#737F8C] hover:text-[#22D3EE] transition">
-            New here? <span className="text-[#22D3EE] font-semibold">Sign up</span>
+            New here? <span className="text-[#22D3EE] font-semibold whitespace-nowrap">Sign up</span>
           </Link>
         </div>
       </div>
